@@ -217,6 +217,56 @@ flist_all(struct flist *l, int (*f)(void *))
 }
 
 struct flist *
+flist_filter(struct flist *l, int (*f)(void *), int deep,
+    void *(*copy_c)(void *))
+{
+        struct   flist *ret;
+        struct   flist_iter *cur;
+        void    *cpy;
+
+        for (ret = NULL, cur = l->head; cur != NULL; cur = cur->next) {
+                if (!f(cur->data))
+                        continue;
+
+                if (deep && copy_c != NULL) {
+                        cpy = copy_c(cur->data);
+                        ret = flist_append(ret, cpy, ELEM_HEAP | ELEM_FREE);
+                } else {
+                        ret = flist_append(ret, cur->data, cur->is_stack ?
+                            ELEM_STACK : ELEM_HEAP);
+                }
+        }
+
+        return ret;
+}
+
+void
+flist_filter_inplace(struct flist *l, int (*f)(void *), int force)
+{
+        struct   flist_iter *cur;
+
+        for (cur = l->head; cur != NULL; cur = cur->next) {
+                if (f(cur->data))
+                        continue;
+
+                if (cur->prev == NULL)
+                        l->head = cur->next;
+                else
+                        cur->prev->next = cur->next;
+
+                if (cur->next == NULL)
+                        l->tail = cur->prev;
+                else
+                        cur->next->prev = cur->prev;
+
+                if (!cur->is_stack && (cur->freeable || force))
+                        free(cur->data);
+
+                free(cur);
+        }
+}
+
+struct flist *
 new_list(void)
 {
         struct   flist *ret;

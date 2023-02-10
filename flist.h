@@ -157,8 +157,41 @@ int              flist_any(struct flist *, int (*)(void *));
  */
 int              flist_all(struct flist *, int (*)(void *));
 
-struct flist    *flist_filter(struct flist *, int (*)(void *));
-struct flist    *flist_filter_inplace(struct flist *, int (*)(void *));
+/**
+ * @fn struct flist *flist_filter(struct flist *l, int (*f)(void *), int deep,
+ * void *(*copy_c)(void *))
+ * @brief Filter out elements of @p l that do not satisfy predicate @p f
+ *
+ * This subroutine creates new list and leaves @p l untouched. For filtering
+ * in-place see @a flist_filter_inplace(). If @p deep is nonzero and @p copy_c
+ * is not NULL, filter performs deep copy of data within nodes of @p l and sets
+ * @a ELEM_FREE flag for all elements of the newly created list.
+ *
+ * @param[in] l Target list
+ * @param[in] f Predicate
+ * @param[in] deep Set to 1 should deep copy be performed
+ * @param[in] copy_c Copy constructor for elements stored in the list
+ * @see flist_filter_inplace()
+ */
+struct flist    *flist_filter(struct flist *, int (*)(void *), int,
+    void *(*)(void *));
+
+/**
+ * @fn void flist_filter_inplace(struct flist *l, int (*f)(void *), int force)
+ * @brief Filter out elements of @p l that do not satisfy predicate @p f
+ * @b inplace
+ *
+ * This subroutine removes from @p l nodes that do not satisfy @p f. Thus it
+ * behaves somewhat similarly to @a flist_free() in the sense that it also
+ * takes a @p force parameter.
+ *
+ * @param[in] l Target list
+ * @param[in] f Predicate
+ * @param[in] force Same as in @a flist_free()
+ * @see flist_free()
+ */
+void             flist_filter_inplace(struct flist *, int (*)(void *), int);
+
 struct flist    *flist_take(struct flist *, int);
 struct flist    *flist_drop(struct flist *, int);
 
