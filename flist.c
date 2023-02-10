@@ -164,6 +164,58 @@ flist_genside(struct flist *l, void (*f)(void *))
                 f(cur->data);
 }
 
+size_t
+flist_length(struct flist *l)
+{
+        return l->len;
+}
+
+void *
+flist_find(struct flist *l, int (*f)(void *))
+{
+        struct   flist_iter *cur;
+
+        for (cur = l->head; cur != NULL; cur = cur->next) {
+                if (f(cur->data))
+                        return cur->data;
+        }
+
+        return NULL;
+}
+
+int
+flist_elem(struct flist *l, int (*cmp)(const void *, const void *),
+    const void *x)
+{
+        struct   flist_iter *cur;
+
+        for (cur = l->head; cur != NULL; cur = cur->next) {
+                if (cmp(cur->data, x) == 0)
+                        return 1;
+        }
+
+        return 0;
+}
+
+int
+flist_any(struct flist *l, int (*f)(void *))
+{
+        return flist_find(l, f) != NULL;
+}
+
+int
+flist_all(struct flist *l, int (*f)(void *))
+{
+        struct   flist_iter *cur;
+
+        for (cur = l->head; cur != NULL; cur = cur->next) {
+                if (!f(cur->data))
+                        return 0;
+        }
+
+        return 1;
+}
+
 struct flist *
 new_list(void)
 {

@@ -95,6 +95,73 @@ struct flist    *flist_map(struct flist *, void *(*)(void *));
  */
 void             flist_genside(struct flist *, void (*)(void *));
 
+/**
+ * @fn size_t flist_length(struct flist *l);
+ * @brief Return length of the list
+ *
+ * Since length of the list is stored in memory, it does not need to be
+ * calculated and therefore this is not a costly operation.
+ *
+ * @param[in] l Target list
+ */
+size_t           flist_length(struct flist *);
+
+/**
+ * @fn void *flist_find(struct flist *l, int (*f)(void *))
+ * @brief Find first element satisfying predicate @p f
+ *
+ * Returns NULL if no such element was found
+ *
+ * @param[in] l Target list
+ * @param[in] f Predicate
+ */
+void            *flist_find(struct flist *, int (*)(void *));
+
+/**
+ * @fn int flist_elem(struct flist *l, int (*cmp)(const void *, const void *),
+ *  const void *x)
+ * @brief Verify whether @p x is an element of @p l
+ *
+ * The @p cmp is expected to be a comparison function defined the same way as
+ * comparison function needed for @a qsort() as defined in ANSI C90.
+ *
+ * @param[in] l Target list
+ * @param[in] cmp Comparison function
+ * @param[in] x Element we are looking for
+ */
+int              flist_elem(struct flist *, int (*)(const void *, const void *),
+    const void *);
+
+/**
+ * @fn int flist_any(struct flist *l, int (*f)(void *))
+ * @brief Verify whether any element of @p l satisfies predicate @p f
+ *
+ * This is equivallent to checking if @a flist_find() returned a non-NULL value.
+ * @param[in] l Target list
+ * @param[in] f Predicate
+ * @see flist_find()
+ */
+int              flist_any(struct flist *, int (*)(void *));
+
+/**
+ * @fn int flist_all(struct flist *l, int (*f)(void *))
+ * @brief Verify whether all elements of @p l satisfy predicate @p f
+ *
+ * This is equivallent to checking if @a flist_find() returned NULL or @a
+ * flist_any() returned true for the logical negation of the predicate.
+ *
+ * @param[in] l Target list
+ * @param[in] f Predicate
+ * @see flist_find()
+ * @see flist_any()
+ */
+int              flist_all(struct flist *, int (*)(void *));
+
+struct flist    *flist_filter(struct flist *, int (*)(void *));
+struct flist    *flist_filter_inplace(struct flist *, int (*)(void *));
+struct flist    *flist_take(struct flist *, int);
+struct flist    *flist_drop(struct flist *, int);
+
 #ifdef RM_POSIX_DECL
 # undef _POSIX_C_SOURCE
 #endif
