@@ -24,9 +24,9 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define ELEM_STACK  0x0 /**< @brief Element is stack-allocated */
-#define ELEM_HEAP   0x1 /**< @brief Element is heap-allocated */
-#define ELEM_FREE   0x2 /**< @brief Free this element upon list deletion */
+#define ELEM_STACK  0x1 /**< @brief Element is stack-allocated */
+#define ELEM_HEAP   0x2 /**< @brief Element is heap-allocated */
+#define ELEM_FREE   0x4 /**< @brief Free this element upon list deletion */
 
 struct flist;
 
