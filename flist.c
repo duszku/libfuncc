@@ -103,4 +103,20 @@ flist_prepend(struct flist *l, void *dat, unsigned flags)
         return l;
 }
 
+void
+flist_free(struct flist **lp, int force)
+{
+        struct   flist_iter *cur, *tmp;
+
+        for (cur = (*lp)->head; cur != NULL; cur = tmp) {
+                if (!cur->is_stack && (force || cur->freeable))
+                        free(cur->data);
+
+                tmp = cur->next;
+                free(cur);
+        }
+
+        *lp = NULL;
+}
+
 /* @endcond */
