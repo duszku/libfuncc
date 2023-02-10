@@ -192,8 +192,25 @@ struct flist    *flist_filter(struct flist *, int (*)(void *), int,
  */
 void             flist_filter_inplace(struct flist *, int (*)(void *), int);
 
-struct flist    *flist_take(struct flist *, int);
+/**
+ * @fn struct flist *flist_take(struct flist *l, int n, int deep,
+ * void *(*copy_c)(void *))
+ * @brief Create new list with only first @p n elements of @p l
+ *
+ * If @p n is greater than or equal to the length of @p l then this subroutine
+ * will simply create a copy of the list. If @p deep is zero or @p copy_c is
+ * NULL, this will be a shallow copy.
+ *
+ * @param[in] l Source list
+ * @param[in] n Number of elements to take
+ * @param[in] deep Set to nonzero should deep copy be performed
+ * @param[in] copy_c Copy constructor for elements stored in the list
+ */
+struct flist    *flist_take(struct flist *, int, int, void *(*)(void *));
+
+void             flist_take_inplace(struct flist *, int, int);
 struct flist    *flist_drop(struct flist *, int);
+void             flist_drop_inplace(struct flist *, int, int);
 
 #ifdef RM_POSIX_DECL
 # undef _POSIX_C_SOURCE
