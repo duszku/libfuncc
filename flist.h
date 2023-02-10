@@ -69,6 +69,32 @@ struct flist    *flist_prepend(struct flist *, void *, unsigned);
  */
 void             flist_free(struct flist **, int);
 
+/**
+ * @fn struct flist *flist_map(struct flist *l, void *(*f)(void *))
+ * @brief Maps @p l to another list using @p f
+ *
+ * Creates a new list obtained by applying function @p f with consecutive
+ * elements of list @p l. All nodes of resulting list are expected to be
+ * dynamically allocated and are flagged with @a ELEM_FREE.
+ *
+ * @param[in] l Source list
+ * @param[in] f Mapping function
+ */
+struct flist    *flist_map(struct flist *, void *(*)(void *));
+
+/**
+ * @fn void flist_genside(struct flist *l, void (*f)(void *))
+ * @brief Generate a sequence of side effects using @p l
+ *
+ * Traverses list @p l and applies unpure function @p f with consecutive
+ * elements of the list. This is intended to be used for things such as printing
+ * or modifying the list in-place.
+ *
+ * @param[in] l Source list
+ * @param[in] f Side effect generator
+ */
+void             flist_genside(struct flist *, void (*)(void *));
+
 #ifdef RM_POSIX_DECL
 # undef _POSIX_C_SOURCE
 #endif
