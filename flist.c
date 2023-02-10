@@ -53,13 +53,36 @@ struct flist {
         size_t       len;               /**< @brief Length of the list */
 };
 
-typedef struct flist_iter *node;
-typedef struct flist *list;
+/**
+ * @fn struct flist new_list(void)
+ * @brief Creates new list
+ *
+ * @todo Allow for more flexible error handling
+ *
+ * Creates and returns a pointer to a new, empty list. Treats malloc failure as
+ * an unrecoverable error (for now at least).
+ */
+static struct flist         *new_list(void);
 
-static list      new_list(void);
-static node      new_node(void *, node, node, unsigned);
-
-/* @cond INC_HEADER_DEFS_SEC */
+/**
+ * @fn struct flist_iter new_node(void *dat, struct flist_iter *prev, struct
+ *  flist_iter *next, unsigned flags)
+ * @brief Creates new node of a linked list
+ *
+ * Create and returns a pointer to a new node of @a flist initialized with
+ * data passed as arguments. Treats malloc failure as an unrecoverable error
+ * (for now at least).
+ *
+ * @todo Allow for more flexible error handling
+ *
+ * @param[in] dat Data to store in the node
+ * @param[in] prev Pointer to previous node
+ * @param[in] next Pointer to next node
+ * @param[in] flags Flags as defined in @a flist_append()
+ * @see flist_append()
+ */
+static struct flist_iter    *new_node(void *, struct flist_iter *,
+    struct flist_iter *, unsigned);
 
 struct flist *
 flist_append(struct flist *l, void *dat, unsigned flags)
@@ -116,7 +139,37 @@ flist_free(struct flist **lp, int force)
                 free(cur);
         }
 
+        free(*lp);
         *lp = NULL;
 }
 
-/* @endcond */
+struct flist *
+new_list(void)
+{
+        struct   flist *ret;
+
+        if ((ret = malloc(sizeof(struct flist))) == NULL)
+                ERROR("malloc");
+
+        memset(ret, 0x00, sizeof(struct flist));
+
+        return ret;
+}
+
+struct flist_iter *
+new_node(void *dat, struct flist_iter *prev, struct flist_iter *next,
+    unsigned flags)
+{
+        struct   flist_iter *ret;
+
+        if ((ret = malloc(sizeof(struct flist_iter))) == NULL)
+                ERROR("malloc");
+
+        ret->data     = dat;
+        ret->next     = next;
+        ret->prev     = prev;
+        ret->is_stack = (flags & ELEM_STACK) != 0 ? 1 : 0;
+        ret->freeable = !ret->is_stack && (flags & ELEM_FREE) != 0 ? 1 : 0;
+
+        return ret;
+}
