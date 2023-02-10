@@ -55,12 +55,12 @@ struct flist    *flist_prepend(struct flist *, void *, unsigned);
 
 /**
  * @fn struct flist *flist_free(struct flist **lp, int force)
- * @brief Frees list pointed to by `lp`
+ * @brief Frees list pointed to by @p lp
  *
- * Traverses list pointed to by `lp` and frees all of its nodes. If given node
- * contains heap-allocated data marked with `ELEM_FREE` flag, then data itself
+ * Traverses list pointed to by @p lp and frees all of its nodes. If given node
+ * contains heap-allocated data marked with @a ELEM_FREE flag, then data itself
  * is also freed. This behaviour can be changed by passing a nonzero value as
- * the `force` argument. Then all heap-allocated data will be freed. At the end
+ * the @p force argument. Then all heap-allocated data will be freed. At the end
  * list is set to NULL so that the variable can be reused.
  *
  * @param[in,out] lp Pointer to the target list
