@@ -112,7 +112,7 @@ flist_prepend(struct flist *l, void *dat, unsigned flags)
         int      nil;
 
         nil     = l == NULL;
-        to_add  = new_node(dat, NULL, nil ? NULL : l->tail, flags);
+        to_add  = new_node(dat, NULL, nil ? NULL : l->head, flags);
 
         if (nil) {
                 l       = new_list();
