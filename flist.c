@@ -144,6 +144,27 @@ flist_free(struct flist **lp, int force)
 }
 
 struct flist *
+flist_map(struct flist *l, void *(*f)(void *))
+{
+        struct   flist *ret;
+        struct   flist_iter *cur;
+
+        for (ret = NULL, cur = l->head; cur != NULL; cur = cur->next)
+                ret = flist_append(ret, f(cur->data), ELEM_HEAP | ELEM_FREE);
+
+        return ret;
+}
+
+void
+flist_genside(struct flist *l, void (*f)(void *))
+{
+        struct   flist_iter *cur;
+
+        for (cur = l->head; cur != NULL; cur = cur->next)
+                f(cur->data);
+}
+
+struct flist *
 new_list(void)
 {
         struct   flist *ret;
