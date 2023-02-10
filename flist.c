@@ -243,9 +243,11 @@ flist_filter(struct flist *l, int (*f)(void *), int deep,
 void
 flist_filter_inplace(struct flist *l, int (*f)(void *), int force)
 {
-        struct   flist_iter *cur;
+        struct   flist_iter *cur, *tmp;
 
-        for (cur = l->head; cur != NULL; cur = cur->next) {
+        for (cur = l->head; cur != NULL; cur = tmp) {
+                tmp = cur->next;
+
                 if (f(cur->data))
                         continue;
 
@@ -263,6 +265,7 @@ flist_filter_inplace(struct flist *l, int (*f)(void *), int force)
                         free(cur->data);
 
                 free(cur);
+                l->len--;
         }
 }
 
