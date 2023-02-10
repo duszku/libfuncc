@@ -54,7 +54,7 @@ struct flist    *flist_append(struct flist *, void *, unsigned);
 struct flist    *flist_prepend(struct flist *, void *, unsigned);
 
 /**
- * @fn struct flist *flist_free(struct flist **lp, int force)
+ * @fn void flist_free(struct flist **lp, int force)
  * @brief Frees list pointed to by @p lp
  *
  * Traverses list pointed to by @p lp and frees all of its nodes. If given node
@@ -169,7 +169,7 @@ int              flist_all(struct flist *, int (*)(void *));
  *
  * @param[in] l Target list
  * @param[in] f Predicate
- * @param[in] deep Set to 1 should deep copy be performed
+ * @param[in] deep Set to nonzero should deep copy be performed
  * @param[in] copy_c Copy constructor for elements stored in the list
  * @see flist_filter_inplace()
  */
