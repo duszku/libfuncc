@@ -156,7 +156,7 @@ flist_map(struct flist *l, void *(*f)(void *))
 }
 
 void
-flist_genside(struct flist *l, void (*f)(void *))
+flist_map_inplace(struct flist *l, void (*f)(void *))
 {
         struct   flist_iter *cur;
 
