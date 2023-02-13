@@ -263,7 +263,20 @@ void             flist_take_inplace(struct flist *, int, int);
  * @see flist_drop_inplace()
  */
 struct flist    *flist_drop(struct flist *, int, int, void *(*)(void *));
-void             flist_drop_inplace(struct flist *, int, int);
+
+/**
+ * @fn void flist_drop_inplace(struct flist **lp, int n, int force)
+ * @brief Remove first @p n elements from @p l
+ *
+ * Calling this with @p n greater or equal to the length of @p l is equivallent
+ * to calling @a flist_free()
+ *
+ * @param[in] lp Pointer to the target list
+ * @param[in] n Number of elements to drop
+ * @param[in] force Same as in @a flist_free()
+ * @see flist_drop()
+ */
+void             flist_drop_inplace(struct flist **, int, int);
 
 #ifdef RM_POSIX_DECL
 # undef _POSIX_C_SOURCE

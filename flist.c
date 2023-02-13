@@ -362,6 +362,26 @@ flist_drop(struct flist *l, int n, int deep, void *(*copy_c)(void *))
         return ret;
 }
 
+void
+flist_drop_inplace(struct flist **lp, int n, int force)
+{
+        struct   flist_iter *cur, *tmp;
+        int      i;
+
+        if (n >= flist_length(*lp)) {
+                flist_free(lp, force);
+                return;
+        }
+
+        for (i = 0, cur = (*lp)->head; i < n; ++i, cur = tmp) {
+                tmp = cur->next;
+
+                if (!cur->is_stack && (force || cur->freeable))
+                        free(cur->data);
+                free(cur);
+        }
+}
+
 struct flist *
 new_list(void)
 {
