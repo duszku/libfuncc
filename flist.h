@@ -240,7 +240,7 @@ struct flist    *flist_take(struct flist *, int, int, void *(*)(void *));
  * If @p n is greater than or equal to the length of @p l then no changes will 
  * be applied.
  *
- * @param[in] l Source list
+ * @param[in] l Target list
  * @param[in] n Number of elements to take
  * @param[in] force Same as in @a flist_free()
  * @see flist_take()
@@ -257,7 +257,7 @@ void             flist_take_inplace(struct flist *, int, int);
  * returned list will contain shallow copies of data in @p l.
  *
  * @param[in] l Source list
- * @param[in] n number of elements to drop
+ * @param[in] n Number of elements to drop
  * @param[in] deep Set to nonzero should deep copy be performed
  * @param[in] copy_c Copy constructor for elements stored in the list
  * @see flist_drop_inplace()
