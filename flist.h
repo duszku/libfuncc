@@ -94,6 +94,54 @@ struct flist    *flist_prepend(struct flist *, void *, unsigned);
 void             flist_free(struct flist **, int);
 
 /**
+ * @fn void *flist_head(struct flist *l)
+ * @brief Returns first element of the list
+ *
+ * If list is empty, NULL is returned instead.
+ *
+ * @param[in] l Source list
+ * @see flist_head_inplace()
+ */
+void            *flist_head(struct flist *);
+
+/**
+ * @fn void *flist_head_inplace(struct flist *l)
+ * @brief Removes first node of the list and returns data it stored
+ *
+ * If list is empty, NULL is returned instead.
+ *
+ * @param[in] l Source list
+ * @see flist_head()
+ */
+void            *flist_head_inplace(struct flist *);
+
+/**
+ * @fn struct flist *flist_tail(struct flist *l, int deep,
+ * void *(*copy_c)(void *))
+ * @brief Returns new list composed of all but the first element
+ *
+ * This is equivallent to calling @a flist_drop() with @p n set to one.
+ *
+ * @param[in] l Source list
+ * @param[in] deep Nonzero should a deep copy be performed
+ * @param[in] copy_c Copy constructor of the data stored in @p l
+ * @see flist_drop()
+ */
+struct flist    *flist_tail(struct flist *, int, void *(*)(void *));
+
+/**
+ * @fn void flist_tail_inplace(struct flist **lp, int force)
+ * @brief Removes first element of the list
+ *
+ * This is equivallent to @a flist_drop_inplace() called with @p n set to one.
+ *
+ * @param[in] l Pointer to the target list
+ * @param[in] force Same as in @a flist_free()
+ * @see flist_drop_inplace()
+ */
+void             flist_tail_inplace(struct flist **, int);
+
+/**
  * @fn struct flist *flist_map(struct flist *l, void *(*f)(void *))
  * @brief Maps @p l to another list using @p f
  *

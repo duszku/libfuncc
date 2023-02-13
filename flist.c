@@ -167,6 +167,41 @@ flist_free(struct flist **lp, int force)
         *lp = NULL;
 }
 
+void *
+flist_head(struct flist *l)
+{
+        return l->head->data;
+}
+
+void *
+flist_head_inplace(struct flist *l)
+{
+        struct   flist_iter *tmp;
+        void    *ret;
+
+        ret = flist_head(l);
+        tmp = l->head;
+
+        l->head->next->prev = NULL;
+        l->head = l->head->next;
+        free(tmp);
+        l->len--;
+
+        return ret;
+}
+
+struct flist *
+flist_tail(struct flist *l, int deep, void *(*copy_c)(void *))
+{
+        return flist_drop(l, 1, deep, copy_c);
+}
+
+void
+flist_tail_inplace(struct flist **lp, int force)
+{
+        flist_drop_inplace(lp, 1, force);
+}
+
 struct flist *
 flist_map(struct flist *l, void *(*f)(void *))
 {
