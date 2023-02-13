@@ -25,6 +25,9 @@
 /**
  * @file
  * @brief Source file for @p flist module
+ * @todo Comment the code. All of it - documentation tells what it does but you
+ * will still need to know how it works once you forget it all in two weeks as
+ * always and then discover some weird bug trying to use it.
  */
 
 #include "flist.h"
