@@ -337,6 +337,32 @@ flist_take_inplace(struct flist *l, int n, int force)
 }
 
 struct flist *
+flist_drop(struct flist *l, int n, int deep, void *(*copy_c)(void *))
+{
+        struct   flist *ret;
+        struct   flist_iter *cur, *tmp;
+        int      i;
+
+        if (n >= flist_length(l))
+                return NULL;
+
+        for (i = 0, cur = l->head; i < n; ++i, cur = cur->next)
+                ;
+
+        for (; cur != NULL; cur = cur->next) {
+                if (deep && copy_c != NULL) {
+                        ret = flist_append(ret, copy_c(cur->data),
+                            ELEM_HEAP | ELEM_FREE);
+                } else {
+                        ret = flist_append(ret, cur->data,
+                            cur->is_stack ? ELEM_STACK : ELEM_HEAP);
+                }
+        }
+
+        return ret;
+}
+
+struct flist *
 new_list(void)
 {
         struct   flist *ret;

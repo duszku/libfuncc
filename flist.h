@@ -246,7 +246,23 @@ struct flist    *flist_take(struct flist *, int, int, void *(*)(void *));
  * @see flist_take()
  */
 void             flist_take_inplace(struct flist *, int, int);
-struct flist    *flist_drop(struct flist *, int);
+
+/**
+ * @fn struct flist *flist_drop(struct flist *l, int n, int deep,
+ * void *(*copy_c)(void *))
+ * @brief Create new list obtained by removing first @p n elements of @p l.
+ *
+ * If @p n is greater than or equal to the length of @p l then this subroutine
+ * will simply return NULL. If @p deep is zero or @p copy_c is NULL, the
+ * returned list will contain shallow copies of data in @p l.
+ *
+ * @param[in] l Source list
+ * @param[in] n number of elements to drop
+ * @param[in] deep Set to nonzero should deep copy be performed
+ * @param[in] copy_c Copy constructor for elements stored in the list
+ * @see flist_drop_inplace()
+ */
+struct flist    *flist_drop(struct flist *, int, int, void *(*)(void *));
 void             flist_drop_inplace(struct flist *, int, int);
 
 #ifdef RM_POSIX_DECL
