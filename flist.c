@@ -321,7 +321,7 @@ flist_take_inplace(struct flist *l, int n, int force)
         struct   flist_iter *cur, *tmp;
         int      i;
 
-        if (n >= flist_length(l))
+        if ((size_t)n >= flist_length(l))
                 return;
 
         for (i = 0, cur = l->head; i < n; ++i, cur = cur->next)
@@ -340,15 +340,16 @@ struct flist *
 flist_drop(struct flist *l, int n, int deep, void *(*copy_c)(void *))
 {
         struct   flist *ret;
-        struct   flist_iter *cur, *tmp;
+        struct   flist_iter *cur;
         int      i;
 
-        if (n >= flist_length(l))
+        if ((size_t)n >= flist_length(l))
                 return NULL;
 
         for (i = 0, cur = l->head; i < n; ++i, cur = cur->next)
                 ;
 
+        ret = NULL;
         for (; cur != NULL; cur = cur->next) {
                 if (deep && copy_c != NULL) {
                         ret = flist_append(ret, copy_c(cur->data),
@@ -368,7 +369,7 @@ flist_drop_inplace(struct flist **lp, int n, int force)
         struct   flist_iter *cur, *tmp;
         int      i;
 
-        if (n >= flist_length(*lp)) {
+        if ((size_t)n >= flist_length(*lp)) {
                 flist_free(lp, force);
                 return;
         }
