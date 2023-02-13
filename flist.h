@@ -229,9 +229,22 @@ void             flist_filter_inplace(struct flist *, int (*)(void *), int);
  * @param[in] n Number of elements to take
  * @param[in] deep Set to nonzero should deep copy be performed
  * @param[in] copy_c Copy constructor for elements stored in the list
+ * @see flist_take_inplace()
  */
 struct flist    *flist_take(struct flist *, int, int, void *(*)(void *));
 
+/**
+ * @fn void flist_take_inplace(struct flist *l, int n, int force)
+ * @brief Truncate the list to a given size
+ *
+ * If @p n is greater than or equal to the length of @p l then no changes will 
+ * be applied.
+ *
+ * @param[in] l Source list
+ * @param[in] n Number of elements to take
+ * @param[in] force Same as in @a flist_free()
+ * @see flist_take()
+ */
 void             flist_take_inplace(struct flist *, int, int);
 struct flist    *flist_drop(struct flist *, int);
 void             flist_drop_inplace(struct flist *, int, int);
