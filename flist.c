@@ -327,12 +327,16 @@ flist_take_inplace(struct flist *l, int n, int force)
         for (i = 0, cur = l->head; i < n; ++i, cur = cur->next)
                 ;
 
+        cur->prev->next = NULL;
+        l->tail = cur->prev;
+
         for (; cur != NULL; cur = tmp) {
                 tmp = cur->next;
 
                 if (!cur->is_stack && (cur->freeable || force))
                         free(cur->data);
                 free(cur);
+                l->len--;
         }
 }
 
@@ -380,7 +384,11 @@ flist_drop_inplace(struct flist **lp, int n, int force)
                 if (!cur->is_stack && (force || cur->freeable))
                         free(cur->data);
                 free(cur);
+                (*lp)->len--;
         }
+
+        cur->prev = NULL;
+        (*lp)->head = cur;
 }
 
 struct flist *
