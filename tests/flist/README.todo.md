@@ -1,7 +1,7 @@
 # Test coverage
 
-- [ ] `flist_all()`
-- [ ] `flist_any()`
+- [x] `flist_all()`
+- [x] `flist_any()`
 - [x] `flist_append()`
   - [x] For stack data
   - [x] For heap data
@@ -9,8 +9,10 @@
 - [ ] `flist_drop()`
 - [ ] `flist_drop_inplace()`
 - [ ] `flist_elem()`
-- [ ] `flist_filter()`
-- [ ] `flist_filter_inplace()`
+- [x] `flist_filter()`
+- [x] `flist_filter_inplace()`
+  - [x] Without force flag
+  - [x] With force flag
 - [ ] `flist_find()`
 - [x] `flist_free()`
   - [x] Without force flag
