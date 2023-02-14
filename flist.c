@@ -229,7 +229,7 @@ flist_map_inplace(struct flist *l, void (*f)(void *))
 size_t
 flist_length(struct flist *l)
 {
-        return l->len;
+        return l == NULL ? 0 : l->len;
 }
 
 void *
