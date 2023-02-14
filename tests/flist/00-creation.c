@@ -16,9 +16,9 @@ TEST_START("flist list creation")
         int      st0, st1, st2;     /* stack-allocated data */
         int      i;
 
-        fprintf(stderr, "\n\n\tCompile this with address/leak sanitizer.");
-        fprintf(stderr, "\tIf LeakSanitizier does not complain at the end then \
-it means that flist_free() works as intended.\n\n");
+        printf("\n\tCompile this with address/leak sanitizer. If leak\n");
+        printf("\tsanitizier does not complain at the end then it\n");
+        printf("\tmeans that flist_free() works as intended.\n\n");
 
 
         /* Preparing testing data */
