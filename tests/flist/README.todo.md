@@ -1,0 +1,30 @@
+# Test coverage
+
+- [ ] `flist_all()`
+- [ ] `flist_any()`
+- [x] `flist_append()`
+  - [x] For stack data
+  - [x] For heap data
+  - [x] For heap-freeable data
+- [ ] `flist_drop()`
+- [ ] `flist_drop_inplace()`
+- [ ] `flist_elem()`
+- [ ] `flist_filter()`
+- [ ] `flist_filter_inplace()`
+- [ ] `flist_find()`
+- [x] `flist_free()`
+  - [x] Without force flag
+  - [x] With force flag
+- [x] `flist_head()`
+- [ ] `flist_head_inplace()`
+- [x] `flist_length()`
+- [ ] `flist_map()`
+- [ ] `flist_map_inplace()`
+- [x] `flist_prepend()`
+  - [x] For stack data
+  - [x] For heap data
+  - [x] For heap-freeable data
+- [ ] `flist_tail()`
+- [ ] `flist_tail_inplace()`
+- [ ] `flist_take()`
+- [ ] `flist_take_inplace()`
