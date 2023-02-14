@@ -158,8 +158,11 @@ flist_free(struct flist **lp, int force)
 {
         struct   flist_iter *cur, *tmp;
 
+        if (*lp == NULL)
+                return;
+
         for (cur = (*lp)->head; cur != NULL; cur = tmp) {
-                if (!cur->is_stack && (force || cur->freeable))
+                if (!cur->is_stack && (force || cur->freeable) && cur->data)
                         free(cur->data);
 
                 tmp = cur->next;
