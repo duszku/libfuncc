@@ -114,8 +114,8 @@ static struct flist_iter    *new_node(void *, struct flist_iter *,
 struct flist *
 flist_append(struct flist *l, void *dat, unsigned flags)
 {
-        struct   flist_iter *to_add;
-        int      nil;
+        struct   flist_iter *to_add;    /* new node */
+        int      nil;                   /* is passed list pointer NULL? */
 
         nil     = l == NULL;
         to_add  = new_node(dat, nil ? NULL : l->tail, NULL, flags);
@@ -135,8 +135,8 @@ flist_append(struct flist *l, void *dat, unsigned flags)
 struct flist *
 flist_prepend(struct flist *l, void *dat, unsigned flags)
 {
-        struct   flist_iter *to_add;
-        int      nil;
+        struct   flist_iter *to_add;    /* new node */
+        int      nil;                   /* is passed list pointer NULL? */
 
         nil     = l == NULL;
         to_add  = new_node(dat, NULL, nil ? NULL : l->head, flags);
@@ -162,6 +162,8 @@ flist_free(struct flist **lp, int force)
                 return;
 
         for (cur = (*lp)->head; cur != NULL; cur = tmp) {
+                /* free data within node iff its dynalloced, non-null
+                   and freeable/force flag is set */
                 if (!cur->is_stack && (force || cur->freeable) && cur->data)
                         free(cur->data);
 
@@ -440,6 +442,7 @@ new_list(void)
         if ((ret = malloc(sizeof(struct flist))) == NULL)
                 ERROR("malloc");
 
+        /* set all flags to zero and all pointers to null */
         memset(ret, 0x00, sizeof(struct flist));
 
         return ret;
