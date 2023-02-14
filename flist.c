@@ -178,7 +178,7 @@ flist_free(struct flist **lp, int force)
 void *
 flist_head(struct flist *l)
 {
-        return l->head->data;
+        return l == NULL ? NULL : l->head->data;
 }
 
 void *
