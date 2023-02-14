@@ -25,6 +25,8 @@
   - [x] For heap data
   - [x] For heap-freeable data
 - [ ] `flist_tail()`
-- [ ] `flist_tail_inplace()`
+- [x] `flist_tail_inplace()`
+  - [x] Without force flag
+  - [x] With force flag
 - [ ] `flist_take()`
 - [ ] `flist_take_inplace()`
