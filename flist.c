@@ -30,7 +30,7 @@
  * always and then discover some weird bug trying to use it.
  */
 
-#include "flist.h"
+#include "include/flist.h"
 
 /**
  * @brief Error-reporting macro

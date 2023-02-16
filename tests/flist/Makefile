@@ -1,7 +1,8 @@
 CC=gcc
 
 C_FLAGS=-Wall -g
-LIBS=-lasan -lubsan -lfunc -lcriterion
+L_FLAGS=-I/usr/local/include -L/usr/local/lib
+LIBS=-lasan -lubsan -lfuncc -lcriterion
 
 BINDIR=bin
 
@@ -16,7 +17,7 @@ ${BINDIR}:
 	mkdir $@
 
 ${BINDIR}/%: %.c ${BINDIR}
-	${CC} ${C_FLAGS} -o$@ $< ${LIBS}
+	${CC} ${C_FLAGS} ${L_FLAGS} -o$@ $< ${LIBS}
 
 clean:
 	rm -f ${BINDIR}/*
