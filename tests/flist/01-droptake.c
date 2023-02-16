@@ -8,8 +8,8 @@
  *  - flist_take_inplace()
  *
  * For this to work properly one needs libfuncc.so produced by the DEBUG target
- * as well as -lasan and -lubsan flags as we rely on the LeakSanitizer to detect
- * problems with memory management.
+ * as well as -lasan and -lubsan flags as we rely on the AddressSanitizer to
+ * detect problems with memory management.
  */
 
 #include <assert.h>
@@ -54,6 +54,33 @@ Test(flist_droptake, tail)
         cr_expect_eq(*((int *)flist_head(l2)), *((int *)hp));
 
         flist_free(&l2, 0);
+}
+
+Test(flist_droptake, tail_inplace)
+{
+        size_t   size;
+
+        /* Without force flag */
+        size = flist_length(list);
+        flist_tail_inplace(&list, 0);
+
+        cr_expect_eq(flist_length(list), size - 1);
+        cr_expect_eq(*((int *)flist_head(list)), 1);
+
+        flist_tail_inplace(&list, 0);
+
+        cr_expect_eq(flist_length(list), size - 2);
+        cr_expect_eq(*((int *)hp), 1); /* checking if sanitizer screams */
+        cr_expect_eq(*((int *)flist_head(list)), 2);
+
+        end();
+        setup();
+
+        /* With force flag */
+        flist_tail_inplace(&list, 1);
+        flist_tail_inplace(&list, 1);
+
+        hp = NULL;
 }
 
 void
