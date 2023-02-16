@@ -88,30 +88,28 @@ Test(flist_creation, prepending)
 
 Test(flist_creation, list_structure)
 {
-#define DUPA printf("dupa\n")
-
         list = flist_append(list, fr, ELEM_HEAP | ELEM_FREE);
         list = flist_append(list, hp, ELEM_HEAP);
         list = flist_append(list, &st, ELEM_STACK);
 
+        cr_assert_neq(flist_head(list), NULL);
         cr_expect_eq(*((int *)flist_head_inplace(list)), 0);
-DUPA;
+        cr_assert_neq(flist_head(list), NULL);
         cr_expect_eq(*((int *)flist_head_inplace(list)), 1);
-DUPA;
+        cr_assert_neq(flist_head(list), NULL);
         cr_expect_eq(*((int *)flist_head_inplace(list)), 2);
-DUPA;
 
         flist_free(&list, 0);
 
         list = flist_prepend(list, fr, ELEM_HEAP | ELEM_FREE);
-DUPA;
         list = flist_prepend(list, hp, ELEM_HEAP);
-DUPA;
         list = flist_prepend(list, &st, ELEM_STACK);
-DUPA;
 
+        cr_assert_neq(flist_head(list), NULL);
         cr_expect_eq(*((int *)flist_head_inplace(list)), 2);
+        cr_assert_neq(flist_head(list), NULL);
         cr_expect_eq(*((int *)flist_head_inplace(list)), 1);
+        cr_assert_neq(flist_head(list), NULL);
         cr_expect_eq(*((int *)flist_head_inplace(list)), 0);
 }
 
