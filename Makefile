@@ -39,7 +39,12 @@ ${LIB}: ${OBJ}
 	${CC} ${C_FLAGS_${TARGET}} -c -o$@ $<
 
 clean:
-	rm -f *.o
+	rm -f *.o *.pdf
 
 test:
 	make -C ${TEST_DIRS}
+
+pdf:
+	doxygen
+	make -C doc/latex
+	ln -s doc/latex/refman.pdf doc.pdf
