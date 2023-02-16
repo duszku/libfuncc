@@ -178,7 +178,7 @@ flist_free(struct flist **lp, int force)
 void *
 flist_head(struct flist *l)
 {
-        return l == NULL ? NULL : l->head->data;
+        return l == NULL || l->head == NULL ? NULL : l->head->data;
 }
 
 void *
@@ -190,10 +190,16 @@ flist_head_inplace(struct flist *l)
         ret = flist_head(l);
         tmp = l->head;
 
-        l->head->next->prev = NULL;
-        l->head = l->head->next;
-        free(tmp);
-        l->len--;
+        if (tmp != NULL) {
+                if (l->head->next != NULL) {
+                        l->head = l->head->next;
+                        l->head->prev = NULL;
+                } else
+                        l->head = l->tail = NULL;
+
+                free(tmp);
+                l->len--;
+        }
 
         return ret;
 }
