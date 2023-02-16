@@ -8,7 +8,7 @@
  *  - flist_head_inplace()
  *  - flist_free()
  *
- * For this to work properly one needs libfunc.so produced by the DEBUG target
+ * For this to work properly one needs libfuncc.so produced by the DEBUG target
  * as well as -lasan and -lubsan flags as we rely on the LeakSanitizer to detect
  * problems with memory management.
  */
