@@ -14,6 +14,7 @@ LIBS_RELEASE=-lc
 
 SRC=flist.c
 OBJ=${SRC:.c=.o}
+TEST_DIRS=$(wildcard tests/*)
 
 LIB=libfuncc.so
 INCLUDES=include
@@ -39,3 +40,6 @@ ${LIB}: ${OBJ}
 
 clean:
 	rm -f *.o
+
+test:
+	make -C ${TEST_DIRS}
