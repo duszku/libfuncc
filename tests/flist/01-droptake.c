@@ -83,6 +83,43 @@ Test(flist_droptake, tail_inplace)
         hp = NULL;
 }
 
+Test(flist_droptake, drop)
+{
+        struct   flist *l2;
+
+        l2 = flist_drop(list, 2, 0, NULL);
+
+        /* Simple dropping behaviour */
+        cr_expect_eq(flist_length(l2), flist_length(list) - 2);
+        cr_expect_eq(flist_head(l2), &st);
+
+        flist_free(&l2, 0);
+
+        /* Dropping nothing */
+        l2 = flist_drop(list, 0, 0, NULL);
+
+        cr_expect_eq(flist_length(l2), flist_length(list));
+        cr_expect_eq(flist_head(l2), flist_head(list));
+
+        flist_free(&l2, 0);
+
+        /* Dropping everything */
+        l2 = flist_drop(list, flist_length(list), 0, NULL);
+
+        cr_expect_eq(flist_length(l2), 0);
+        cr_expect_eq(l2, NULL);
+
+        flist_free(&l2, 0);
+
+        /* Dropping with deep copying */
+        l2 = flist_drop(list, 2, 1, copy_c);
+
+        cr_expect_eq(*((int *)flist_head(l2)), st);
+        cr_expect_neq(flist_head(l2), flist_head(list));
+
+        flist_free(&l2, 0);
+}
+
 void
 setup(void)
 {
