@@ -120,6 +120,45 @@ Test(flist_droptake, drop)
         flist_free(&l2, 0);
 }
 
+Test(flist_droptake, drop_inplace)
+{
+        size_t   size;
+
+        /* Without force flag */
+        size = flist_length(list);
+        flist_drop_inplace(&list, 2, 0);
+
+        cr_expect_eq(flist_length(list), size - 2);
+        cr_expect_eq(flist_head(list), &st);
+        cr_expect_eq(*((int *)hp), 1);  /* check if sanitizer screams at us */
+
+        end();
+        setup();
+
+        flist_drop_inplace(&list, 0, 0);
+
+        cr_expect_eq(flist_length(list), size);
+        cr_expect_eq(*((int *)flist_head(list)), *((int *)fr));
+
+        end();
+        setup();
+
+        flist_drop_inplace(&list, flist_length(list), 0);
+
+        cr_expect_eq(list, NULL);
+        fr = NULL;
+
+        end();
+        setup();
+
+        /* With force flag */
+        flist_drop_inplace(&list, 2, 1);
+        hp = NULL;
+
+        end();
+        setup();
+}
+
 void
 setup(void)
 {
