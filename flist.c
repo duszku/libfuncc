@@ -50,10 +50,10 @@
 /**
  * @brief Node of `flist`
  *
- * This structure works as both a node as well as the iterator. The `flist` is
+ * This structure works both as a node as well as the iterator. The `flist` is
  * implemented to be a doubly linked list storing data in form of void pointers
  * to mimic generics. Moreover, each node contains a two-flag bitfield which
- * store information used by `flist_free()` upon list deletion.
+ * stores information used by `flist_free()` upon list deletion.
  *
  * @see flist_free()
  */
@@ -96,7 +96,7 @@ static struct flist         *new_list(void);
  *  flist_iter *next, unsigned flags)
  * @brief Creates new node of a linked list
  *
- * Create and returns a pointer to a new node of @a flist initialized with
+ * Creates and returns a pointer to a new node of @a flist initialized with
  * data passed as arguments. Treats malloc failure as an unrecoverable error
  * (for now at least).
  *

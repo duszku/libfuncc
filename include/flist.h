@@ -40,7 +40,7 @@
 #define FLIST_H_INCLUDED
 
 #ifndef _POSIX_C_SOURCE
-# define RM_POSIX_DECL
+# define _RM_POSIX_DECL
 # define _POSIX_C_SOURCE 200809L
 #endif
 
@@ -326,7 +326,7 @@ struct flist    *flist_drop(struct flist *, int, int, void *(*)(void *));
  */
 void             flist_drop_inplace(struct flist **, int, int);
 
-#ifdef RM_POSIX_DECL
+#ifdef _RM_POSIX_DECL
 # undef _POSIX_C_SOURCE
 #endif
 
