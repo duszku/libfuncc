@@ -229,12 +229,20 @@ flist_map(struct flist *l, void *(*f)(void *))
 }
 
 void
-flist_map_inplace(struct flist *l, void *(*f)(void *))
+flist_map_inplace(struct flist *l, void *(*f)(void *), int force)
 {
+        void    *data;
         struct   flist_iter *cur;
 
-        for (cur = l->head; cur != NULL; cur = cur->next)
+        for (cur = l->head; cur != NULL; cur = cur->next) {
+                data = f(cur->data);
+
+                if (cur->data != data && !cur->is_stack && data &&
+                    (cur->freeable || force))
+                        free(cur->data);
+
                 cur->data = f(cur->data);
+        }
 }
 
 size_t

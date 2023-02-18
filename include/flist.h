@@ -155,17 +155,20 @@ void             flist_tail_inplace(struct flist **, int);
 struct flist    *flist_map(struct flist *, void *(*)(void *));
 
 /**
- * @fn void flist_map_inplace(struct flist *l, void *(*f)(void *))
+ * @fn void flist_map_inplace(struct flist *l, void *(*f)(void *), int force)
  * @brief Generate a sequence of side effects using @p l
  *
  * Traverses list @p l and applies unpure function @p f with consecutive
  * elements of the list. This is intended to be used for things such as printing
- * or modifying the list in-place.
+ * or modifying the list in-place. Functions that do not change the list still
+ * need to return NULL or their input (be an identity function), otherwise
+ * contents of the list will be removed.
  *
  * @param[in] l Source list
  * @param[in] f Side effect generator
+ * @param[in] force Set to nonzero should old elements be removed
  */
-void             flist_map_inplace(struct flist *, void *(*)(void *));
+void             flist_map_inplace(struct flist *, void *(*)(void *), int);
 
 /**
  * @fn size_t flist_length(struct flist *l);
