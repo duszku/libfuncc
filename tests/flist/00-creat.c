@@ -25,6 +25,17 @@ int     *fr, *hp, st;
 void         setup(void);
 void         end(void);
 
+int
+cmp(const void *x, const void *y)
+{
+        int xx, yy;
+
+        xx = *((int *)x);
+        yy = *((int *)y);
+
+        return xx == yy ? 0 : xx > yy ? 1 : -1;
+}
+
 TestSuite(flist_creation, .init=setup, .fini=end);
 
 Test(flist_creation, appending)
@@ -113,6 +124,17 @@ Test(flist_creation, list_structure)
         cr_expect_eq(*((int *)flist_head_inplace(list)), 0);
 }
 
+Test(flist_creation, elem)
+{
+        list = flist_prepend(list, fr, ELEM_HEAP | ELEM_FREE);
+        list = flist_prepend(list, hp, ELEM_HEAP);
+        list = flist_prepend(list, &st, ELEM_STACK);
+
+        cr_expect(flist_elem(list, cmp, &st));
+        cr_expect(flist_elem(list, cmp, hp));
+        cr_expect(flist_elem(list, cmp, fr));
+}
+
 void
 setup(void)
 {
@@ -137,7 +159,7 @@ end(void)
                 hp = NULL;
         }
 
-        if (fr != NULL) {
+        if (fr != NULL && list != NULL) {
                 free(fr);
                 fr = NULL;
         }
