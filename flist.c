@@ -261,6 +261,10 @@ flist_elem(struct flist *l, int (*cmp)(const void *, const void *),
     const void *x)
 {
         struct   flist_iter *cur;
+        
+        /* empty list contains nothing */
+        if (l == NULL)
+                return 0;
 
         for (cur = l->head; cur != NULL; cur = cur->next) {
                 if (cmp(cur->data, x) == 0)
