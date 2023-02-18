@@ -76,6 +76,27 @@ Test(flist_preds, filter_shallow)
         cr_expect_null(l2);
 }
 
+Test(flist_preds, filter_deep)
+{
+        void    *dat;
+        struct   flist *l2;
+
+        l2 = flist_filter(list, lt_20, 1, copy_c);
+        cr_expect_eq(flist_length(l2), flist_length(list));
+
+        while (flist_length(l2) > 0) {
+                cr_expect_eq(*((int *)flist_head(l2)),
+                    *((int *)flist_head(list)));
+
+                cr_expect_neq((dat = flist_head_inplace(l2)),
+                    flist_head_inplace(list));
+
+                free(dat);
+        }
+
+        flist_free(&l2, 0);
+}
+
 Test(flist_preds, all)
 {
         int      twenty = 20, twentyone = 21;
