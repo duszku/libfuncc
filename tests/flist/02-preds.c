@@ -119,6 +119,17 @@ Test(flist_preds, all)
         flist_free(&l2, 0);
 }
 
+Test(flist_preds, any)
+{
+        int twenty = 20;
+
+        cr_expect(flist_any(list, lt_20));
+        cr_expect_not(flist_any(list, geq_20));
+
+        list = flist_append(list, &twenty, ELEM_STACK);
+        cr_expect(flist_any(list, geq_20));
+}
+
 void
 setup(void)
 {
