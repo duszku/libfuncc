@@ -2,11 +2,11 @@
  * Unit testing all subroutines concerning creation, memory management and
  * structure of flist, namely:
  *  - flist_append()
- *  - flist_prepend()
- *  - flist_length()
+ *  - flist_free()
  *  - flist_head()
  *  - flist_head_inplace()
- *  - flist_free()
+ *  - flist_length()
+ *  - flist_prepend()
  *
  * For this to work properly one needs libfuncc.so produced by the DEBUG target
  * as well as -lasan and -lubsan flags as we rely on the LeakSanitizer to detect

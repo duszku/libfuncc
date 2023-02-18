@@ -1,9 +1,9 @@
 /*
  * Unit testing all subroutines concerning dropping or taking elements of flist:
- *  - flist_tail()
- *  - flist_tail_inplace()
  *  - flist_drop()
  *  - flist_drop_inplace()
+ *  - flist_tail()
+ *  - flist_tail_inplace()
  *  - flist_take()
  *  - flist_take_inplace()
  *
