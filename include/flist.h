@@ -249,20 +249,21 @@ struct flist    *flist_filter(struct flist *, int (*)(void *), int,
     void *(*)(void *));
 
 /**
- * @fn void flist_filter_inplace(struct flist *l, int (*f)(void *), int force)
+ * @fn void flist_filter_inplace(struct flist **l, int (*f)(void *), int force)
  * @brief Filter out elements of @p l that do not satisfy predicate @p f
  * @b inplace
  *
  * This subroutine removes from @p l nodes that do not satisfy @p f. Thus it
  * behaves somewhat similarly to @a flist_free() in the sense that it also
- * takes a @p force parameter.
+ * takes a @p force parameter. If no element satisfies @p f, then entire list is
+ * freed.
  *
- * @param[in] l Target list
+ * @param[in] lp Pointer to target list
  * @param[in] f Predicate
  * @param[in] force Same as in @a flist_free()
  * @see flist_free()
  */
-void             flist_filter_inplace(struct flist *, int (*)(void *), int);
+void             flist_filter_inplace(struct flist **, int (*)(void *), int);
 
 /**
  * @fn struct flist *flist_take(struct flist *l, int n, int deep,

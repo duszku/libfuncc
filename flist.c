@@ -318,23 +318,23 @@ flist_filter(struct flist *l, int (*f)(void *), int deep,
 }
 
 void
-flist_filter_inplace(struct flist *l, int (*f)(void *), int force)
+flist_filter_inplace(struct flist **lp, int (*f)(void *), int force)
 {
         struct   flist_iter *cur, *tmp;
 
-        for (cur = l->head; cur != NULL; cur = tmp) {
+        for (cur = (*lp)->head; cur != NULL; cur = tmp) {
                 tmp = cur->next;
 
                 if (f(cur->data))
                         continue;
 
                 if (cur->prev == NULL)
-                        l->head = cur->next;
+                        (*lp)->head = cur->next;
                 else
                         cur->prev->next = cur->next;
 
                 if (cur->next == NULL)
-                        l->tail = cur->prev;
+                        (*lp)->tail = cur->prev;
                 else
                         cur->next->prev = cur->prev;
 
@@ -342,8 +342,11 @@ flist_filter_inplace(struct flist *l, int (*f)(void *), int force)
                         free(cur->data);
 
                 free(cur);
-                l->len--;
+                (*lp)->len--;
         }
+
+        if ((*lp)->len == 0)
+                flist_free(lp, force);
 }
 
 struct flist *
