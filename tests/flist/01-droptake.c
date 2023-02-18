@@ -202,6 +202,51 @@ Test(flist_droptake, take)
         flist_free(&l2, 0);
 }
 
+Test(flist_droptake, take_inplace)
+{
+        size_t   size;
+        /* Without force flag */
+        flist_take_inplace(&list, 2, 0);
+
+        cr_expect_eq(flist_length(list), 2);
+        cr_expect_eq(flist_head_inplace(list), fr);
+        cr_expect_eq(flist_head_inplace(list), hp);
+        cr_expect_eq(flist_head_inplace(list), NULL);
+
+        flist_free(&list, 0);
+
+        end();
+        setup();
+
+        assert(list != NULL);
+        flist_take_inplace(&list, 0, 0);
+        fr = NULL;
+
+        cr_expect_eq(flist_length(list), 0);
+        cr_expect_eq(list, NULL);
+
+        end();
+        setup();
+
+        size = flist_length(list);
+        flist_take_inplace(&list, flist_length(list), 0);
+
+        cr_expect_eq(flist_length(list), size);
+        cr_expect_eq(flist_head_inplace(list), fr);
+        cr_expect_eq(flist_head_inplace(list), hp);
+        cr_expect_eq(flist_head_inplace(list), &st);
+        cr_expect_eq(flist_length(list), 0);
+
+        flist_free(&list, 0);
+
+        /* With force flag */
+        end();
+        setup();
+
+        flist_take_inplace(&list, 1, 1);
+        hp = NULL;  /* no sanitizer complaints = good */
+}
+
 void
 setup(void)
 {
