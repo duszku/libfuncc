@@ -130,6 +130,17 @@ Test(flist_preds, any)
         cr_expect(flist_any(list, geq_20));
 }
 
+Test(flist_preds, find)
+{
+        int      twenty = 20, twentyone = 21;
+
+        cr_expect_null(flist_find(list, geq_20));
+        list = flist_append(list, &twenty, ELEM_STACK);
+        cr_expect_eq(flist_find(list, geq_20), &twenty);
+        list = flist_prepend(list, &twentyone, ELEM_STACK);
+        cr_expect_eq(flist_find(list, geq_20), &twentyone);
+}
+
 void
 setup(void)
 {
