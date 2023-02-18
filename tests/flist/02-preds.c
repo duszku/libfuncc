@@ -76,6 +76,28 @@ Test(flist_preds, filter_shallow)
         cr_expect_null(l2);
 }
 
+Test(flist_preds, all)
+{
+        int      twenty = 20, twentyone = 21;
+        struct   flist *l2;
+
+        cr_expect(flist_all(list, lt_20));
+
+        l2 = flist_filter(list, is_odd, 0, NULL);
+        cr_expect(flist_all(l2, is_odd));
+        cr_expect(flist_all(l2, lt_20));
+        l2 = flist_append(l2, &twenty, ELEM_STACK);
+        cr_expect_not(flist_all(l2, lt_20));
+        cr_expect_not(flist_all(l2, is_odd));
+        flist_free(&l2, 0);
+
+        l2 = flist_filter(list, is_evn, 0, NULL);
+        cr_expect(flist_all(l2, is_evn));
+        l2 = flist_append(l2, &twentyone, ELEM_STACK);
+        cr_expect_not(flist_all(l2, is_evn));
+        flist_free(&l2, 0);
+}
+
 void
 setup(void)
 {
