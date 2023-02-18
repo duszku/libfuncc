@@ -1,5 +1,9 @@
-*.so
-*.o
+# Wildcard patterns
+**.so
+**.o
+**.todo.md
+
+# Files in this directory
 doc
 todo
 doc.pdf
