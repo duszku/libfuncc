@@ -369,19 +369,22 @@ flist_take(struct flist *l, int n, int deep, void *(*copy_c)(void *))
 }
 
 void
-flist_take_inplace(struct flist *l, int n, int force)
+flist_take_inplace(struct flist **lp, int n, int force)
 {
         struct   flist_iter *cur, *tmp;
         int      i;
 
-        if ((size_t)n >= flist_length(l))
+        if (n <= 0)
+                flist_free(lp, force);
+
+        if ((size_t)n >= flist_length(*lp))
                 return;
 
-        for (i = 0, cur = l->head; i < n; ++i, cur = cur->next)
+        for (i = 0, cur = (*lp)->head; i < n; ++i, cur = cur->next)
                 ;
 
         cur->prev->next = NULL;
-        l->tail = cur->prev;
+        (*lp)->tail = cur->prev;
 
         for (; cur != NULL; cur = tmp) {
                 tmp = cur->next;
@@ -389,7 +392,7 @@ flist_take_inplace(struct flist *l, int n, int force)
                 if (!cur->is_stack && (force || cur->freeable) && cur->data)
                         free(cur->data);
                 free(cur);
-                l->len--;
+                (*lp)->len--;
         }
 }
 
