@@ -229,12 +229,12 @@ flist_map(struct flist *l, void *(*f)(void *))
 }
 
 void
-flist_map_inplace(struct flist *l, void (*f)(void *))
+flist_map_inplace(struct flist *l, void *(*f)(void *))
 {
         struct   flist_iter *cur;
 
         for (cur = l->head; cur != NULL; cur = cur->next)
-                f(cur->data);
+                cur->data = f(cur->data);
 }
 
 size_t

@@ -155,7 +155,7 @@ void             flist_tail_inplace(struct flist **, int);
 struct flist    *flist_map(struct flist *, void *(*)(void *));
 
 /**
- * @fn void flist_map_inplace(struct flist *l, void (*f)(void *))
+ * @fn void flist_map_inplace(struct flist *l, void *(*f)(void *))
  * @brief Generate a sequence of side effects using @p l
  *
  * Traverses list @p l and applies unpure function @p f with consecutive
@@ -165,7 +165,7 @@ struct flist    *flist_map(struct flist *, void *(*)(void *));
  * @param[in] l Source list
  * @param[in] f Side effect generator
  */
-void             flist_map_inplace(struct flist *, void (*)(void *));
+void             flist_map_inplace(struct flist *, void *(*)(void *));
 
 /**
  * @fn size_t flist_length(struct flist *l);
