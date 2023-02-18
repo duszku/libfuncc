@@ -237,11 +237,14 @@ flist_map_inplace(struct flist *l, void *(*f)(void *), int force)
         for (cur = l->head; cur != NULL; cur = cur->next) {
                 data = f(cur->data);
 
-                if (cur->data != data && !cur->is_stack && data &&
-                    (cur->freeable || force))
-                        free(cur->data);
+                if (cur->data != data && data != NULL) {
+                        if (!cur->is_stack && (cur->freeable || force))
+                                free(cur->data);
 
-                cur->data = f(cur->data);
+                        cur->is_stack = 0;
+                        cur->freeable = 1;
+                        cur->data = data;
+                }
         }
 }
 
