@@ -141,6 +141,32 @@ Test(flist_preds, find)
         cr_expect_eq(flist_find(list, geq_20), &twentyone);
 }
 
+Test(flist_preds, filter_inplace)
+{
+        int *hp, *fr;
+
+        flist_filter_inplace(&list, is_evn, 0);
+        cr_expect_eq(flist_length(list), A_LEN >> 1);
+        cr_expect(flist_all(list, is_evn));
+
+        flist_filter_inplace(&list, geq_20, 0);
+        cr_expect_null(list);
+
+        assert((hp = malloc(sizeof(int))) != NULL);
+        assert((fr = malloc(sizeof(int))) != NULL);
+
+        *hp = 20;
+        *fr = 21;
+
+        list = flist_append(list, hp, ELEM_HEAP);
+        list = flist_append(list, fr, ELEM_HEAP | ELEM_FREE);
+
+        flist_filter_inplace(&list, geq_20, 0);
+        cr_expect_eq(flist_length(list), 2);
+
+        flist_filter_inplace(&list, is_odd, 1); /* check sanitizer */
+}
+
 void
 setup(void)
 {
