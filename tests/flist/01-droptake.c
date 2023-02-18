@@ -116,6 +116,7 @@ Test(flist_droptake, drop)
 
         cr_expect_eq(*((int *)flist_head(l2)), st);
         cr_expect_neq(flist_head(l2), flist_head(list));
+        cr_expect_neq(flist_head(l2), &st);
 
         flist_free(&l2, 0);
 }
@@ -157,6 +158,48 @@ Test(flist_droptake, drop_inplace)
 
         end();
         setup();
+}
+
+Test(flist_droptake, take)
+{
+        struct   flist *l2;
+
+        l2 = flist_take(list, 2, 0, NULL);
+
+        /* Simple taking behaviour */
+        cr_expect_eq(flist_length(l2), 2);
+        cr_expect_eq(flist_head_inplace(l2), fr);
+        cr_expect_eq(flist_head_inplace(l2), hp);
+
+        flist_free(&l2, 0);
+
+        /* Taking nothing */
+        l2 = flist_take(list, 0, 0, NULL);
+
+        cr_expect_eq(flist_length(l2), 0);
+        cr_expect_eq(l2, NULL);
+
+        /* Taking everything */
+        l2 = flist_take(list, flist_length(list), 0, NULL);
+
+        cr_expect_eq(flist_length(l2), flist_length(list));
+        cr_expect_eq(flist_head_inplace(l2), flist_head_inplace(list));
+        cr_expect_eq(flist_head_inplace(l2), flist_head_inplace(list));
+        cr_expect_eq(flist_head_inplace(l2), flist_head_inplace(list));
+
+        flist_free(&l2, 0);
+        flist_free(&list, 0);
+
+        end();
+        setup();
+
+        /* Taking with deep copying */
+        l2 = flist_take(list, 2, 1, copy_c);
+
+        cr_expect_eq(*((int *)flist_head(l2)), *((int *)flist_head(list)));
+        cr_expect_neq(flist_head(l2), flist_head(list));
+
+        flist_free(&l2, 0);
 }
 
 void
