@@ -78,6 +78,24 @@ struct flist    *flist_append(struct flist *, void *, unsigned);
 struct flist    *flist_prepend(struct flist *, void *, unsigned);
 
 /**
+ * @fn struct flist *flist_copy(struct flist *l, void *(*copy_c)(void *))
+ * @brief Creates copy of list @p l
+ *
+ * If copy is intended to be shallow, pass NULL as @p copy_c. Then pointers to
+ * data located in each node will be naively copied to the new list, but if any
+ * of them had @a ELEM_FREE flag set, it will be removed (so that such elements
+ * will not be freed twice).
+ *
+ * To make a deep copy, @p copy_c has to be a dynamically-allocating copy
+ * constructor. All elements of the newly created list will have the
+ * @a ELEM_FREE flag set.
+ *
+ * @param[in] l Source list
+ * @param[in] copy_c Copy constructor, pass NULL if shallow copy suffices
+ */
+struct flist    *flist_copy(struct flist *, void *(*)(void *));
+
+/**
  * @fn void flist_free(struct flist **lp, int force)
  * @brief Frees list pointed to by @p lp
  *
