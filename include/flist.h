@@ -334,7 +334,7 @@ void             flist_drop_inplace(struct flist **, int, int);
  * @fn void *flist_foldr(struct flist *l, void *x, void *(*f)(void *, void *))
  * @brief Folds the list from the right
  *
- * Calculates value of @p f applied with x and last element of @p l, then of
+ * Calculates value of @p f applied with @p x and last element of @p l, then of
  * @p f applied with the penultimate element and result of previous calculation
  * and so on until it reaches the end. @p f is expected to return heap-allocated
  * data that can be freed. @p l is unmodified.
@@ -344,6 +344,18 @@ void             flist_drop_inplace(struct flist **, int, int);
  * @param[in] f Folding function
  */
 void            *flist_foldr(struct flist *, void *, void *(*)(void *, void *));
+
+/**
+ * @fn void *flist_foldl(struct flist *l, void *x, void *(*f)(void *, void *))
+ * @brief Folds the list from the left
+ *
+ * Analogous to @a flist_foldr()
+ *
+ * @param[in] l Source list
+ * @param[in] x Starting element
+ * @param[in] f Folding function
+ */
+void            *flist_foldl(struct flist *, void *, void *(*)(void *, void *));
 
 #ifdef _RM_POSIX_DECL
 # undef _POSIX_C_SOURCE

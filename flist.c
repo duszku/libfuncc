@@ -479,6 +479,24 @@ flist_foldr(struct flist *l, void *x, void *(*f)(void *, void *))
         return acc;
 }
 
+void *
+flist_foldl(struct flist *l, void *x, void *(*f)(void *, void *))
+{
+        void    *acc, *tmp;
+        struct   flist_iter *cur;
+
+        if (l == NULL || l->tail == NULL)
+                return x;
+
+        acc = f(x, l->head->data);
+        for (cur = l->head->next; cur != NULL; cur = cur->next, free(tmp)) {
+                tmp = acc;
+                acc = f(tmp, cur->data);
+        }
+
+        return acc;
+}
+
 struct flist *
 new_list(void)
 {
