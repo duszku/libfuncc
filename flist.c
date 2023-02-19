@@ -461,6 +461,24 @@ flist_drop_inplace(struct flist **lp, int n, int force)
         (*lp)->head = cur;
 }
 
+void *
+flist_foldr(struct flist *l, void *x, void *(*f)(void *, void *))
+{
+        void    *acc, *tmp;
+        struct   flist_iter *cur;
+
+        if (l == NULL || l->tail == NULL)
+                return x;
+
+        acc = f(l->tail->data, x);
+        for (cur = l->tail->prev; cur != NULL; cur = cur->prev, free(tmp)) {
+                tmp = acc;
+                acc = f(cur->data, tmp);
+        }
+
+        return acc;
+}
+
 struct flist *
 new_list(void)
 {
