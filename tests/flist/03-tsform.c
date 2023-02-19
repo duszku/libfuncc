@@ -117,6 +117,25 @@ Test(flist_tsform, foldr)
 
         cr_expect_eq(*((int *)ret), 95);
         free(ret);
+
+        ret = flist_foldr(NULL, &x, sub);
+
+        cr_expect_eq(*((int *)ret), 100);
+}
+
+Test(flist_tsform, foldl)
+{
+        int      x = 100;
+        void    *ret;
+
+        ret = flist_foldl(list, &x, sub);
+
+        cr_expect_eq(*((int *)ret), 55);
+        free(ret);
+
+        ret = flist_foldl(NULL, &x, sub);
+
+        cr_expect_eq(*((int *)ret), 100);
 }
 
 void
