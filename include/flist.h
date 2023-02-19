@@ -95,68 +95,30 @@ void             flist_free(struct flist **, int);
 
 /**
  * @fn void *flist_head(struct flist *l)
- * @brief Returns first element of the list
  *
- * If list is empty, NULL is returned instead.
+ * Drops all but the first element of the list
+ *
+ * This is equivallent to @a flist_take() called with @p n set to one.
  *
  * @param[in] l Source list
- * @see flist_head_inplace()
  */
 void            *flist_head(struct flist *);
 
 /**
- * @fn void *flist_head_inplace(struct flist *l)
- * @brief Removes first node of the list and returns data it stored
- *
- * If list is empty, NULL is returned instead.
- *
- * @param[in] l Source list
- * @see flist_head()
- */
-void            *flist_head_inplace(struct flist *);
-
-/**
- * @fn struct flist *flist_tail(struct flist *l, int deep,
- * void *(*copy_c)(void *))
- * @brief Returns new list composed of all but the first element
- *
- * This is equivallent to calling @a flist_drop() with @p n set to one.
- *
- * @param[in] l Source list
- * @param[in] deep Nonzero should a deep copy be performed
- * @param[in] copy_c Copy constructor of the data stored in @p l
- * @see flist_drop()
- */
-struct flist    *flist_tail(struct flist *, int, void *(*)(void *));
-
-/**
- * @fn void flist_tail_inplace(struct flist **lp, int force)
+ * @fn void flist_tail(struct flist **lp, int force)
  * @brief Removes first element of the list
  *
- * This is equivallent to @a flist_drop_inplace() called with @p n set to one.
+ * This is equivallent to @a flist_drop() called with @p n set to one.
  *
  * @param[in] l Pointer to the target list
  * @param[in] force Same as in @a flist_free()
- * @see flist_drop_inplace()
  */
-void             flist_tail_inplace(struct flist **, int);
+void             flist_tail(struct flist **, int);
 
 /**
- * @fn struct flist *flist_map(struct flist *l, void *(*f)(void *))
- * @brief Maps @p l to another list using @p f
- *
- * Creates a new list obtained by applying function @p f with consecutive
- * elements of list @p l. All nodes of resulting list are expected to be
- * dynamically allocated and are flagged with @a ELEM_FREE.
- *
- * @param[in] l Source list
- * @param[in] f Mapping function
- */
-struct flist    *flist_map(struct flist *, void *(*)(void *));
-
-/**
- * @fn void flist_map_inplace(struct flist *l, void *(*f)(void *), int force)
- * @brief Generate a sequence of side effects using @p l
+ * @fn void flist_map(struct flist *l, void *(*f)(void *), int force)
+ * @brief Apply @p f with all elements of @p l and put the result in place of
+ * the arguments.
  *
  * Traverses list @p l and applies unpure function @p f with consecutive
  * elements of the list. This is intended to be used for things such as printing
@@ -168,7 +130,7 @@ struct flist    *flist_map(struct flist *, void *(*)(void *));
  * @param[in] f Side effect generator
  * @param[in] force Set to nonzero should old elements be removed
  */
-void             flist_map_inplace(struct flist *, void *(*)(void *), int);
+void             flist_map(struct flist *, void *(*)(void *), int);
 
 /**
  * @fn size_t flist_length(struct flist *l);
@@ -233,28 +195,8 @@ int              flist_any(struct flist *, int (*)(void *));
 int              flist_all(struct flist *, int (*)(void *));
 
 /**
- * @fn struct flist *flist_filter(struct flist *l, int (*f)(void *), int deep,
- * void *(*copy_c)(void *))
+ * @fn void flist_filter(struct flist **l, int (*f)(void *), int force)
  * @brief Filter out elements of @p l that do not satisfy predicate @p f
- *
- * This subroutine creates new list and leaves @p l untouched. For filtering
- * in-place see @a flist_filter_inplace(). If @p deep is nonzero and @p copy_c
- * is not NULL, filter performs deep copy of data within nodes of @p l and sets
- * @a ELEM_FREE flag for all elements of the newly created list.
- *
- * @param[in] l Target list
- * @param[in] f Predicate
- * @param[in] deep Set to nonzero should deep copy be performed
- * @param[in] copy_c Copy constructor for elements stored in the list
- * @see flist_filter_inplace()
- */
-struct flist    *flist_filter(struct flist *, int (*)(void *), int,
-    void *(*)(void *));
-
-/**
- * @fn void flist_filter_inplace(struct flist **l, int (*f)(void *), int force)
- * @brief Filter out elements of @p l that do not satisfy predicate @p f
- * @b inplace
  *
  * This subroutine removes from @p l nodes that do not satisfy @p f. Thus it
  * behaves somewhat similarly to @a flist_free() in the sense that it also
@@ -266,27 +208,10 @@ struct flist    *flist_filter(struct flist *, int (*)(void *), int,
  * @param[in] force Same as in @a flist_free()
  * @see flist_free()
  */
-void             flist_filter_inplace(struct flist **, int (*)(void *), int);
+void             flist_filter(struct flist **, int (*)(void *), int);
 
 /**
- * @fn struct flist *flist_take(struct flist *l, int n, int deep,
- * void *(*copy_c)(void *))
- * @brief Create new list with only first @p n elements of @p l
- *
- * If @p n is greater than or equal to the length of @p l then this subroutine
- * will simply create a copy of the list. If @p deep is zero or @p copy_c is
- * NULL, this will be a shallow copy.
- *
- * @param[in] l Source list
- * @param[in] n Number of elements to take
- * @param[in] deep Set to nonzero should deep copy be performed
- * @param[in] copy_c Copy constructor for elements stored in the list
- * @see flist_take_inplace()
- */
-struct flist    *flist_take(struct flist *, int, int, void *(*)(void *));
-
-/**
- * @fn void flist_take_inplace(struct flist **lp, int n, int force)
+ * @fn void flist_take(struct flist **lp, int n, int force)
  * @brief Truncate the list to a given size
  *
  * If @p n is greater than or equal to the length of @p l then no changes will 
@@ -295,29 +220,11 @@ struct flist    *flist_take(struct flist *, int, int, void *(*)(void *));
  * @param[in] lp Pointer to the target list
  * @param[in] n Number of elements to take
  * @param[in] force Same as in @a flist_free()
- * @see flist_take()
  */
-void             flist_take_inplace(struct flist **, int, int);
+void             flist_take(struct flist **, int, int);
 
 /**
- * @fn struct flist *flist_drop(struct flist *l, int n, int deep,
- * void *(*copy_c)(void *))
- * @brief Create new list obtained by removing first @p n elements of @p l.
- *
- * If @p n is greater than or equal to the length of @p l then this subroutine
- * will simply return NULL. If @p deep is zero or @p copy_c is NULL, the
- * returned list will contain shallow copies of data in @p l.
- *
- * @param[in] l Source list
- * @param[in] n Number of elements to drop
- * @param[in] deep Set to nonzero should deep copy be performed
- * @param[in] copy_c Copy constructor for elements stored in the list
- * @see flist_drop_inplace()
- */
-struct flist    *flist_drop(struct flist *, int, int, void *(*)(void *));
-
-/**
- * @fn void flist_drop_inplace(struct flist **lp, int n, int force)
+ * @fn void flist_drop(struct flist **lp, int n, int force)
  * @brief Remove first @p n elements from @p l
  *
  * Calling this with @p n greater or equal to the length of @p l is equivallent
@@ -326,9 +233,8 @@ struct flist    *flist_drop(struct flist *, int, int, void *(*)(void *));
  * @param[in] lp Pointer to the target list
  * @param[in] n Number of elements to drop
  * @param[in] force Same as in @a flist_free()
- * @see flist_drop()
  */
-void             flist_drop_inplace(struct flist **, int, int);
+void             flist_drop(struct flist **, int, int);
 
 /**
  * @fn void *flist_foldr(struct flist *l, void *x, void *(*f)(void *, void *))
