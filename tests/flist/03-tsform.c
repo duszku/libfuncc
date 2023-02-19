@@ -27,6 +27,17 @@ square(void *x)
         return ret;
 }
 
+void *
+sub(void *x, void *y)
+{
+        int *ret;
+
+        assert((ret = malloc(sizeof(int))) != NULL);
+
+        *ret = *((int *)x) - *((int *)y);
+        return ret;
+}
+
 void *retnul(void *ign) { return NULL; }
 void *id(void *x) { return x; }
 
@@ -95,6 +106,17 @@ Test(flist_tsform, map_inplace_force)
 
         list = flist_prepend(list, hp, ELEM_HEAP);
         flist_map_inplace(list, square, 1);
+}
+
+Test(flist_tsform, foldr)
+{
+        int      x = 100;
+        void    *ret;
+
+        ret = flist_foldr(list, &x, sub);
+
+        cr_expect_eq(*((int *)ret), 95);
+        free(ret);
 }
 
 void
