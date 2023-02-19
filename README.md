@@ -40,3 +40,14 @@ development)_ documentation.
 As of now default target is set to DEBUG, as project is still far from finished.
 That said for everyday usage it might be wise to switch it to RELEASE. This can
 be done by editing `TARGET` variable in the makefile.
+
+## What comes next?
+
+The idea of normal and _"inplace"_ functions was somewhat missed and i think ill
+remove it and just add a separate function for copying. I also plan to add a
+separate field in the list structure for data destructor, as now it may only
+store simple types, releasable by `free()`.
+
+Once I do that, this and some of possible bug fixes and optimizations will
+become the libfuncc release 0.2 and ill switch to tuples module as i need it for
+list zips.
