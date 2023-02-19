@@ -175,9 +175,21 @@ flist_free(struct flist **lp, int force)
         *lp = NULL;
 }
 
-void *
-flist_head(struct flist *l)
+void
+flist_head(struct flist *l, int force)
 {
+        struct   flist_iter *cur, *tmp;
+
+        if (l == NULL)
+                return;
+
+        for (cur = l->head->next; cur != NULL; cur = tmp) {
+                if (!cur->is_stack && cur->data && (force || cur->freeable))
+                        free(cur->data);
+
+                tmp = cur->next;
+                free(cur);
+        }
 }
 
 void

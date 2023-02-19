@@ -94,15 +94,16 @@ struct flist    *flist_prepend(struct flist *, void *, unsigned);
 void             flist_free(struct flist **, int);
 
 /**
- * @fn void *flist_head(struct flist *l)
+ * @fn void flist_head(struct flist *l, int force)
  *
  * Drops all but the first element of the list
  *
  * This is equivallent to @a flist_take() called with @p n set to one.
  *
  * @param[in] l Source list
+ * @param[in] force Same as in @a flist_free()
  */
-void            *flist_head(struct flist *);
+void             flist_head(struct flist *, int);
 
 /**
  * @fn void flist_tail(struct flist **lp, int force)
