@@ -153,6 +153,25 @@ flist_prepend(struct flist *l, void *dat, unsigned flags)
         return l;
 }
 
+struct flist *
+flist_copy(struct flist *l, void *(*copy_c)(void *))
+{
+        struct   flist_iter *cur;
+        struct   flist *ret;
+
+        for (ret = NULL, cur = l->head; cur != NULL; cur = cur->next) {
+                if (copy_c == NULL) {
+                        ret = flist_append(ret, cur->data,
+                            cur->is_stack ? ELEM_STACK : ELEM_HEAP);
+                } else {
+                        ret = flist_append(ret, copy_c(cur->data),
+                            ELEM_HEAP | ELEM_FREE);
+                }
+        }
+
+        return ret;
+}
+
 void
 flist_free(struct flist **lp, int force)
 {
