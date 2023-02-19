@@ -178,58 +178,16 @@ flist_free(struct flist **lp, int force)
 void *
 flist_head(struct flist *l)
 {
-        return l == NULL || l->head == NULL ? NULL : l->head->data;
-}
-
-void *
-flist_head_inplace(struct flist *l)
-{
-        struct   flist_iter *tmp;
-        void    *ret;
-
-        ret = flist_head(l);
-        tmp = l->head;
-
-        if (tmp != NULL) {
-                if (l->head->next != NULL) {
-                        l->head = l->head->next;
-                        l->head->prev = NULL;
-                } else
-                        l->head = l->tail = NULL;
-
-                free(tmp);
-                l->len--;
-        }
-
-        return ret;
-}
-
-struct flist *
-flist_tail(struct flist *l, int deep, void *(*copy_c)(void *))
-{
-        return flist_drop(l, 1, deep, copy_c);
 }
 
 void
-flist_tail_inplace(struct flist **lp, int force)
+flist_tail(struct flist **lp, int force)
 {
-        flist_drop_inplace(lp, 1, force);
-}
-
-struct flist *
-flist_map(struct flist *l, void *(*f)(void *))
-{
-        struct   flist *ret;
-        struct   flist_iter *cur;
-
-        for (ret = NULL, cur = l->head; cur != NULL; cur = cur->next)
-                ret = flist_append(ret, f(cur->data), ELEM_HEAP | ELEM_FREE);
-
-        return ret;
+        flist_drop(lp, 1, force);
 }
 
 void
-flist_map_inplace(struct flist *l, void *(*f)(void *), int force)
+flist_map(struct flist *l, void *(*f)(void *), int force)
 {
         void    *data;
         struct   flist_iter *cur;
@@ -304,32 +262,8 @@ flist_all(struct flist *l, int (*f)(void *))
         return 1;
 }
 
-struct flist *
-flist_filter(struct flist *l, int (*f)(void *), int deep,
-    void *(*copy_c)(void *))
-{
-        struct   flist *ret;
-        struct   flist_iter *cur;
-        void    *cpy;
-
-        for (ret = NULL, cur = l->head; cur != NULL; cur = cur->next) {
-                if (!f(cur->data))
-                        continue;
-
-                if (deep && copy_c != NULL) {
-                        cpy = copy_c(cur->data);
-                        ret = flist_append(ret, cpy, ELEM_HEAP | ELEM_FREE);
-                } else {
-                        ret = flist_append(ret, cur->data, cur->is_stack ?
-                            ELEM_STACK : ELEM_HEAP);
-                }
-        }
-
-        return ret;
-}
-
 void
-flist_filter_inplace(struct flist **lp, int (*f)(void *), int force)
+flist_filter(struct flist **lp, int (*f)(void *), int force)
 {
         struct   flist_iter *cur, *tmp;
 
@@ -360,30 +294,8 @@ flist_filter_inplace(struct flist **lp, int (*f)(void *), int force)
                 flist_free(lp, force);
 }
 
-struct flist *
-flist_take(struct flist *l, int n, int deep, void *(*copy_c)(void *))
-{
-        struct   flist *ret;
-        struct   flist_iter *cur;
-        void    *cpy;
-        int      i;
-
-        ret = NULL;
-        for (i = 0, cur = l->head; i < n && cur != NULL; ++i, cur = cur->next) {
-                if (deep && copy_c != NULL) {
-                        cpy = copy_c(cur->data);
-                        ret = flist_append(ret, cpy, ELEM_HEAP | ELEM_FREE);
-                } else {
-                        ret = flist_append(ret, cur->data, cur->is_stack ?
-                            ELEM_STACK : ELEM_HEAP);
-                }
-        }
-
-        return ret;
-}
-
 void
-flist_take_inplace(struct flist **lp, int n, int force)
+flist_take(struct flist **lp, int n, int force)
 {
         struct   flist_iter *cur, *tmp;
         int      i;
@@ -410,35 +322,8 @@ flist_take_inplace(struct flist **lp, int n, int force)
         }
 }
 
-struct flist *
-flist_drop(struct flist *l, int n, int deep, void *(*copy_c)(void *))
-{
-        struct   flist *ret;
-        struct   flist_iter *cur;
-        int      i;
-
-        if ((size_t)n >= flist_length(l))
-                return NULL;
-
-        for (i = 0, cur = l->head; i < n; ++i, cur = cur->next)
-                ;
-
-        ret = NULL;
-        for (; cur != NULL; cur = cur->next) {
-                if (deep && copy_c != NULL) {
-                        ret = flist_append(ret, copy_c(cur->data),
-                            ELEM_HEAP | ELEM_FREE);
-                } else {
-                        ret = flist_append(ret, cur->data,
-                            cur->is_stack ? ELEM_STACK : ELEM_HEAP);
-                }
-        }
-
-        return ret;
-}
-
 void
-flist_drop_inplace(struct flist **lp, int n, int force)
+flist_drop(struct flist **lp, int n, int force)
 {
         struct   flist_iter *cur, *tmp;
         int      i;
