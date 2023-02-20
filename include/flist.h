@@ -126,8 +126,7 @@ void             flist_set_cleanup(struct flist *, void (*)(void *));
 
 /**
  * @fn void flist_head(struct flist *l, int force)
- *
- * Drops all but the first element of the list
+ * @brief Drops all but the first element of the list
  *
  * This is equivallent to @a flist_take() called with @p n set to one.
  *
