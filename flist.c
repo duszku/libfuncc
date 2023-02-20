@@ -431,6 +431,8 @@ new_list(void)
         /* set all flags to zero and all pointers to null */
         memset(ret, 0x00, sizeof(struct flist));
 
+        ret->cl_hand = free;
+
         return ret;
 }
 
@@ -446,8 +448,8 @@ new_node(void *dat, struct flist_iter *prev, struct flist_iter *next,
         ret->data     = dat;
         ret->next     = next;
         ret->prev     = prev;
-        ret->is_stack = (flags & ELEM_STACK) != 0 ? 1 : 0;
-        ret->freeable = !ret->is_stack && (flags & ELEM_FREE) != 0 ? 1 : 0;
+        ret->call_h   = (flags & FLIST_CLEANABLE) != 0 ? 1 : 0;
+        ret->prot_h   = (flags & FLIST_CLEANPROT) != 0 ? 1 : 0;
 
         return ret;
 }
