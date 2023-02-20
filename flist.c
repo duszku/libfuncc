@@ -163,10 +163,10 @@ flist_copy(struct flist *l, void *(*copy_c)(void *))
         for (ret = NULL, cur = l->head; cur != NULL; cur = cur->next) {
                 if (copy_c == NULL) {
                         ret = flist_append(ret, cur->data,
-                            cur->is_stack ? ELEM_STACK : ELEM_HEAP);
+                            cur->call_h ? FLIST_CLEANPROT : FLIST_DONTCLEAN);
                 } else {
-                        ret = flist_append(ret, copy_c(cur->data),
-                            ELEM_HEAP | ELEM_FREE);
+                        ret = flist_append(ret, copy_c(cur->data), 
+                            FLIST_CLEANABLE);
                 }
         }
 
@@ -182,10 +182,12 @@ flist_free(struct flist **lp, int force)
                 return;
 
         for (cur = (*lp)->head; cur != NULL; cur = tmp) {
-                /* free data within node iff its dynalloced, non-null
-                   and freeable/force flag is set */
-                if (!cur->is_stack && (force || cur->freeable) && cur->data)
-                        free(cur->data);
+                /* 
+                 * Only call cleanup handler for nonnul, cleanable data when
+                 * either it is not protected or force flag is set.
+                 */
+                if (cur->call_h && cur->data && (!cur->prot_h || force))
+                        (*lp)->cl_hand(cur->data);
 
                 tmp = cur->next;
                 free(cur);
@@ -204,8 +206,8 @@ flist_head(struct flist *l, int force)
                 return;
 
         for (cur = l->head->next; cur != NULL; cur = tmp) {
-                if (!cur->is_stack && cur->data && (force || cur->freeable))
-                        free(cur->data);
+                if (cur->call_h && cur->data && (!cur->prot_h || force))
+                        l->cl_hand(cur->data);
 
                 tmp = cur->next;
                 free(cur);
@@ -228,11 +230,11 @@ flist_map(struct flist *l, void *(*f)(void *), int force)
                 data = f(cur->data);
 
                 if (cur->data != data && data != NULL) {
-                        if (!cur->is_stack && (cur->freeable || force))
-                                free(cur->data);
+                        if (cur->call_h && cur->data && (!cur->prot_h || force))
+                                l->cl_hand(cur->data);
 
-                        cur->is_stack = 0;
-                        cur->freeable = 1;
+                        cur->call_h = 1;
+                        cur->prot_h = 0;
                         cur->data = data;
                 }
         }
@@ -263,7 +265,7 @@ flist_elem(struct flist *l, int (*cmp)(const void *, const void *),
 {
         struct   flist_iter *cur;
         
-        /* empty list contains nothing */
+        /* empty list contains nothing (duh) */
         if (l == NULL)
                 return 0;
 
@@ -315,8 +317,8 @@ flist_filter(struct flist **lp, int (*f)(void *), int force)
                 else
                         cur->next->prev = cur->prev;
 
-                if (!cur->is_stack && (force || cur->freeable) && cur->data)
-                        free(cur->data);
+                if (cur->call_h && cur->data && (!cur->prot_h || force))
+                        (*lp)->cl_hand(cur->data);
 
                 free(cur);
                 (*lp)->len--;
@@ -347,8 +349,9 @@ flist_take(struct flist **lp, int n, int force)
         for (; cur != NULL; cur = tmp) {
                 tmp = cur->next;
 
-                if (!cur->is_stack && (force || cur->freeable) && cur->data)
-                        free(cur->data);
+                if (cur->call_h && cur->data && (!cur->prot_h || force))
+                        (*lp)->cl_hand(cur->data);
+
                 free(cur);
                 (*lp)->len--;
         }
@@ -368,8 +371,9 @@ flist_drop(struct flist **lp, int n, int force)
         for (i = 0, cur = (*lp)->head; i < n; ++i, cur = tmp) {
                 tmp = cur->next;
 
-                if (!cur->is_stack && (force || cur->freeable) && cur->data)
-                        free(cur->data);
+                if (cur->call_h && cur->data && (!cur->prot_h || force))
+                        (*lp)->cl_hand(cur->data);
+
                 free(cur);
                 (*lp)->len--;
         }
@@ -388,9 +392,10 @@ flist_foldr(struct flist *l, void *x, void *(*f)(void *, void *))
                 return x;
 
         acc = f(l->tail->data, x);
-        for (cur = l->tail->prev; cur != NULL; cur = cur->prev, free(tmp)) {
+        for (cur = l->tail->prev; cur != NULL; cur = cur->prev) {
                 tmp = acc;
                 acc = f(cur->data, tmp);
+                l->cl_hand(tmp);
         }
 
         return acc;
@@ -406,9 +411,10 @@ flist_foldl(struct flist *l, void *x, void *(*f)(void *, void *))
                 return x;
 
         acc = f(x, l->head->data);
-        for (cur = l->head->next; cur != NULL; cur = cur->next, free(tmp)) {
+        for (cur = l->head->next; cur != NULL; cur = cur->next) {
                 tmp = acc;
                 acc = f(tmp, cur->data);
+                l->cl_hand(tmp);
         }
 
         return acc;
