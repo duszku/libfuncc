@@ -198,6 +198,15 @@ flist_free(struct flist **lp, int force)
 }
 
 void
+flist_set_cleanup(struct flist *l, void (*handler)(void *))
+{
+        if (l == NULL || handler == NULL)
+                return;
+
+        l->cl_hand = handler;
+}
+
+void
 flist_head(struct flist *l, int force)
 {
         struct   flist_iter *cur, *tmp;
