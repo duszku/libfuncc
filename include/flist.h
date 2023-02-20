@@ -48,13 +48,11 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define ELEM_STACK  0x1 /**< @brief Element is stack-allocated */
-#define ELEM_HEAP   0x2 /**< @brief Element is heap-allocated */
-#define ELEM_FREE   0x4 /**< @brief Free this element upon list deletion */
+#define FLIST_DONTCLEAN 0x0 /**< @brief Inflag, cleanup handler not called */
+#define FLIST_CLEANABLE 0x1 /**< @brief Inflag, cleanup handler called */
+#define FLIST_CLEANPROT 0x2 /**< @brief Inflag, cleanup handler can be called */
 
 struct flist;
-
-/* Memory menagement and list construction subroutines */
 
 /**
  * @fn struct flist *flist_append(struct flist *l, void *dat, unsigned flags)
