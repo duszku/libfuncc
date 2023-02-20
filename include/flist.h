@@ -112,6 +112,21 @@ struct flist    *flist_copy(struct flist *, void *(*)(void *));
 void             flist_free(struct flist **, int);
 
 /**
+ * @fn void flist_set_cleanup(struct flist *l, void (*handler)(void *))
+ * @brief Change cleanup handler for list @p l
+ *
+ * When @a flist_append() and @a flist_prepend() create new lists they set
+ * cleanup handler for them to standard @a free() function. However if data
+ * stored in the list is not a simple type (for example it is a struct storing
+ * pointers to dynamically allocated data) it may be necessary to change the
+ * cleanup handler in order to avoid memory leaks.
+ *
+ * @param[in] l Target list
+ * @param[in] handler New cleanup handler
+ */
+void             flist_set_cleanup(struct flist *, void (*)(void *));
+
+/**
  * @fn void flist_head(struct flist *l, int force)
  *
  * Drops all but the first element of the list
