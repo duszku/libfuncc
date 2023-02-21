@@ -12,7 +12,7 @@ L_FLAGS_RELEASE=-shared
 LIBS_DEBUG=-lasan -lubsan -lc
 LIBS_RELEASE=-lc
 
-SRC=flist.c
+SRC=flist.c ftuple.c
 OBJ=${SRC:.c=.o}
 TEST_DIRS=$(wildcard tests/*)
 
