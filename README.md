@@ -8,7 +8,7 @@ It is still in an early stage of development.
 ## Modules
 
 - [x] Linked lists and set of functions imitating Haskell's `Data.List`
-- [ ] Tuples, currying and uncurrying, zipping of lists
+- [ ] Tuples, zipping of lists
 - [ ] Monads as wrappers around types with a common interface
 - [ ] Functions, set of macros/subroutines that allow for things such as
 function composition or partial application
