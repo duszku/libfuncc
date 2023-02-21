@@ -12,14 +12,13 @@ ftuple_create(size_t dim, ...)
         va_list  args;
         struct   ftuple *ret;
 
-        if (dim < 2)
+        if (dim < 2 || (ret = malloc(sizeof(struct ftuple))) == NULL)
                 return NULL;
 
-        if ((ret = malloc(sizeof(struct ftuple))) == NULL)
+        if ((ret->arr = calloc(dim, sizeof(void *))) == NULL) {
+                free(ret);
                 return NULL;
-
-        if ((ret = calloc(dim, sizeof(void *))) == NULL)
-                return NULL;
+        }
 
         ret->dim = dim;
         
@@ -49,17 +48,17 @@ ftuple_dim(struct ftuple *t)
 void *
 ftuple_fst(struct ftuple *t)
 {
-        return ftuple_nth(t, 1);
+        return ftuple_nth(t, 0);
 }
 
 void *
 ftuple_snd(struct ftuple *t)
 {
-        return ftuple_nth(t, 2);
+        return ftuple_nth(t, 1);
 }
 
 void *
-ftuple_nth(struct ftuple *t, int n)
+ftuple_nth(struct ftuple *t, size_t n)
 {
         return t == NULL || n >= ftuple_dim(t) ? NULL : t->arr[n];
 }

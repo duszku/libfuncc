@@ -104,7 +104,7 @@ void            *ftuple_snd(struct ftuple *);
  * @param[in] t Source tuple
  * @param[in] n Posiiton to retrieve value from
  */
-void            *ftuple_nth(struct ftuple *, int);
+void            *ftuple_nth(struct ftuple *, size_t);
 
 #ifdef _RM_POSIX_DECL
 # undef _POSIX_C_SOURCE
