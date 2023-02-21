@@ -62,8 +62,8 @@ struct flist_iter {
         struct       flist_iter *prev;  /**< @brief Previous node */
         void        *data;              /**< @brief Pointer to the data */
 
-        unsigned     call_h : 1;      /**< @brief Call cleanup handler? */
-        unsigned     prot_h : 1;      /**< @brief Call cleanup iff forced? */
+        unsigned     call_h : 1;        /**< @brief Call cleanup handler? */
+        unsigned     prot_h : 1;        /**< @brief Call cleanup iff forced? */
 };
 
 /**
