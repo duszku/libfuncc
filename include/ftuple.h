@@ -52,6 +52,8 @@ struct ftuple;
  * @fn struct ftuple *ftuple_create(size_t dim, ...)
  * @brief Join @p dim elements into a tuple
  *
+ * Returns NULL on error.
+ *
  * @param[in] dim Size of the tuple
  * @param[in] ... Conseccutive elements of the tuple
  */
