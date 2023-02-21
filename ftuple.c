@@ -36,3 +36,9 @@ ftuple_dim(struct ftuple *t)
 {
         return t == NULL ? 0 : t->dim;
 }
+
+void *
+ftuple_nth(struct ftuple *t, int n)
+{
+        return t == NULL || n >= ftuple_dim(t) ? NULL : t->arr[n];
+}
