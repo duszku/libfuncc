@@ -12,6 +12,9 @@ ftuple_create(size_t dim, ...)
         va_list  args;
         struct   ftuple *ret;
 
+        if (dim < 2)
+                return NULL;
+
         if ((ret = malloc(sizeof(struct ftuple))) == NULL)
                 return NULL;
 
@@ -26,4 +29,10 @@ ftuple_create(size_t dim, ...)
         va_end(args);
 
         return ret;
+}
+
+size_t
+ftuple_dim(struct ftuple *t)
+{
+        return t == NULL ? 0 : t->dim;
 }
