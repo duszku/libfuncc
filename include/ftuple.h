@@ -60,6 +60,18 @@ struct ftuple;
 struct ftuple   *ftuple_create(size_t, ...);
 
 /**
+ * @fn void ftuple_free(struct ftuple **tp)
+ * @brief Free tuple structure
+ *
+ * This does not free elements stored within the tuple! Should they be freed,
+ * they first need to be retrieved and dealt with by the programmer. Tuple
+ * pointed to by @p tp is then set to NULL.
+ *
+ * @param[in,out] tp Pointer to the target tuple
+ */
+void             ftuple_free(struct ftuple **);
+
+/**
  * @fn size_t ftuple_dim(struct ftuple *t)
  * @brief Retrieve size of a tuple
  *

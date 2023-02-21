@@ -31,6 +31,15 @@ ftuple_create(size_t dim, ...)
         return ret;
 }
 
+void
+ftuple_free(struct ftuple **tp)
+{
+        free((*tp)->arr);
+        free(*tp);
+
+        *tp = NULL;
+}
+
 size_t
 ftuple_dim(struct ftuple *t)
 {
