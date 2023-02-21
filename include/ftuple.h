@@ -43,7 +43,54 @@
 # define _POSIX_C_SOURCE 200809L
 #endif
 
+#include <stdlib.h>
+#include <stdarg.h>
 
+struct ftuple;
+
+/**
+ * @fn struct ftuple *ftuple_create(size_t dim, ...)
+ * @brief Join @p dim elements into a tuple
+ *
+ * @param[in] dim Size of the tuple
+ * @param[in] ... Conseccutive elements of the tuple
+ */
+struct ftuple   *ftuple_create(size_t, ...);
+
+/**
+ * @fn size_t ftuple_dim(struct ftuple *t)
+ * @brief Retrieve size of a tuple
+ *
+ * @param[in] t Target tuple
+ */
+size_t           ftuple_dim(struct ftuple *);
+
+/**
+ * @fn void *ftuple_fst(struct ftuple *t)
+ * @brief Retrieve first element of @p t
+ *
+ * @param[in] t Source tuple
+ */
+void            *ftuple_fst(struct ftuple *);
+
+/**
+ * @fn void *ftuple_snd(struct ftuple *t)
+ * @brief Retrieve second element of @p t
+ *
+ * @param[in] t Source tuple
+ */
+void            *ftuple_snd(struct ftuple *);
+
+/**
+ * @fn void *ftuple_nth(struct ftuple *t, int n)
+ * @brief Retrieve @p n th element of @p t
+ *
+ * If @p n is greater then size of the tuple, NULL is returned instead.
+ *
+ * @param[in] t Source tuple
+ * @param[in] n Posiiton to retrieve value from
+ */
+void            *ftuple_nth(struct ftuple *, int);
 
 #ifdef _RM_POSIX_DECL
 # undef _POSIX_C_SOURCE
