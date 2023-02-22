@@ -8,7 +8,7 @@ module and a skeleton of tuples module.
 ## Contents
 
 - Haskell-like **lists** with some subset of `Data.List` functions ported
-(folds, map, find, filter, take, drop and few others)
+(folds, map, find, filter, take and few others)
 - A very basic **tuples** module
 
 ## Getting started
