@@ -56,10 +56,10 @@ function will depend on it. You have three flags at your disposal:
 - `FLIST_DONTCLEAN` - primary intended use is for stack-allocated data. No
 cleaning function will ever, under any circumstances try to free this resource.
 - `FLIST_CLEANABLE` - primary intended use is for heap-allocated data that you
-will not need anywhere outside the list and upon cleanup it can be freed
+will not need anywhere outside the list and upon cleanup it can be freed.
 - `FLIST_CLEANPROT` - by itself it has no meaning however if you bitwise-or it
-`FLIST_CLEANABLE`, then the resource will not be freed by default however there
-will be a way to force this behaviour if necessary.
+with `FLIST_CLEANABLE`, then the resource will not be freed by default however
+there will be a way to force this behaviour if necessary.
 
 To free resources taken by list use `flist_free()` subroutine. It traverses the
 list and cleans every node. This function takes an integer parameter `force`. If
@@ -67,14 +67,14 @@ it is nonzero, all `FLIST_CLEANPROT` flags are ignored and all cleanable
 resources are freed anyway. If it is zero, data declared as protected is left
 untouched.
 
-The way `flist_free()` deals with data stored can be modified anytime before
-`flist_free()` call by calling `flist_set_cleanup()`. If your data is not a
-simple int or a char and needs more sophisticated _destructor_, you may give
-said destructor as a new cleanup handler by this subroutine. This may be useful
-for data such as structs with dynamically allocated fields that will become
-unreachable after the struct itself is freed.
+The way `flist_free()` deals with data stored in the nodes can be modified
+anytime before `flist_free()` call by calling `flist_set_cleanup()`. If your
+data is not a simple int or a char and needs more sophisticated _destructor_,
+you may give a pointer to said destructor as a new cleanup handler by this
+subroutine. This may be useful for data such as structs with dynamically
+allocated fields that will become unreachable after the struct itself is freed.
 
-Most of the remaining function **modify the input list**. Thus if you need to
+Most of the remaining functions **modify the input list**. Thus if you need to
 preserve its previous state, use `flist_copy()`. As name suggests it creates a
 copy of its input list. Such a copy can be either shallow (simply put all
 pointers to the new list as they were) or deep. A deep copy will be performed if
