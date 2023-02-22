@@ -60,9 +60,10 @@
 struct flist_iter {
         struct       flist_iter *next;  /**< @brief Next node */
         struct       flist_iter *prev;  /**< @brief Previous node */
-        size_t       arity;             /**< @brief In results of zip - dim */
         void        *data;              /**< @brief Pointer to the data */
-        unsigned     char *flags;       /**< @brief Array of cleanup flags */
+
+        unsigned     call_h : 1;        /**< @brief Call cleanup handler? */
+        unsigned     prot_h : 1;        /**< @brief Call cleanup iff forced? */
 };
 
 /**
