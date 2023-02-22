@@ -296,16 +296,6 @@ void            *flist_foldr(struct flist *, void *, void *(*)(void *, void *));
  */
 void            *flist_foldl(struct flist *, void *, void *(*)(void *, void *));
 
-/**
- * @fn struct flist *flist_zip(struct flist *l1, struct flist *l2)
- * @fn Produce list of ordered pairs with coordinates taken from corresponding
- * lists
- *
- * @param[in] l1 Source list for first coordinates
- * @param[in] l2 Source list for second coordinates
- */
-struct flist    *flist_zip(struct flist *, struct flist *);
-
 #ifdef _RM_POSIX_DECL
 # undef _POSIX_C_SOURCE
 #endif
