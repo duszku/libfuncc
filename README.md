@@ -32,12 +32,8 @@ make
 
 There also exists an `install` target which puts all the necessary files into
 appropriate subdirectories of `/usr/local` as well as a `pdf` target which
-requires doxygen and pdflatex and creates _(somewhat chaotic and still under
-development)_ documentation.
-
-As of now default target is set to DEBUG, as project is still far from finished.
-That said for everyday usage it might be wise to switch it to RELEASE. This can
-be done by editing `TARGET` variable in the makefile.
+requires doxygen and pdflatex and creates _(not gonna lie, not a very
+well-written)_ documentation.
 
 ## Lain for no reason
 
