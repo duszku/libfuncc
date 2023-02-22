@@ -83,12 +83,12 @@ struct flist    *flist_prepend(struct flist *, void *, unsigned);
  *
  * If copy is intended to be shallow, pass NULL as @p copy_c. Then pointers to
  * data located in each node will be naively copied to the new list, but if any
- * of them had @a ELEM_FREE flag set, it will be removed (so that such elements
- * will not be freed twice).
+ * of them had @a FLIST_CLEANABLE flag set, @a FLIST_CLEANPROT will be added (so
+ * that such elements will not be freed twice).
  *
  * To make a deep copy, @p copy_c has to be a dynamically-allocating copy
  * constructor. All elements of the newly created list will have the
- * @a ELEM_FREE flag set.
+ * @a FLIST_CLEANABLE flag set.
  *
  * @param[in] l Source list
  * @param[in] copy_c Copy constructor, pass NULL if shallow copy suffices
@@ -100,10 +100,10 @@ struct flist    *flist_copy(struct flist *, void *(*)(void *));
  * @brief Frees list pointed to by @p lp
  *
  * Traverses list pointed to by @p lp and frees all of its nodes. If given node
- * contains heap-allocated data marked with @a ELEM_FREE flag, then data itself
- * is also freed. This behaviour can be changed by passing a nonzero value as
- * the @p force argument. Then all heap-allocated data will be freed. At the end
- * list is set to NULL so that the variable can be reused.
+ * contains heap-allocated data marked with @a FLIST_CLEANABLE flag, then data
+ * itself is also freed. This behaviour can be changed by passing a nonzero
+ * value as the @p force argument. Then all heap-allocated data will be freed.
+ * At the end list is set to NULL so that the variable can be reused.
  *
  * @param[in,out] lp Pointer to the target list
  * @param[in] force Boolean, set to nonzero should all heap-allocated elements
