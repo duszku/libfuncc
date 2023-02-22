@@ -1,6 +1,6 @@
 CC=gcc
 
-TARGET=REALEASE
+TARGET=RELEASE
 
 C_FLAGS_DEBUG=-ansi -Wall -Wextra -Werror -Og -g -fpic \
 	      -fsanitize=address,undefined
