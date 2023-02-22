@@ -1,17 +1,15 @@
-# libfuncc
+# Libfuncc
 
-Libfuncc is a simple library that aims to port some of features typically seen
-in functional programming languages to C in a reasonable way.
+Libfuncc is a C library that ports behaviours from Haskell to C. New stuff is
+added whenever I need it, so don't expect it to grow large quickly unless I
+get unusually inspired for this particular project. Right now it only has lists
+module and a skeleton of tuples module.
 
-It is still in an early stage of development.
+## Contents
 
-## Modules
-
-- [x] Linked lists and set of functions imitating Haskell's `Data.List`
-- [ ] Tuples, zipping of lists
-- [ ] Monads as wrappers around types with a common interface
-- [ ] Functions, set of macros/subroutines that allow for things such as
-function composition or partial application
+- Haskell-like **lists** with some subset of `Data.List` functions ported
+(folds, map, find, filter, take, drop and few others)
+- A very basic **tuples** module
 
 ## Getting started
 
@@ -40,11 +38,6 @@ development)_ documentation.
 As of now default target is set to DEBUG, as project is still far from finished.
 That said for everyday usage it might be wise to switch it to RELEASE. This can
 be done by editing `TARGET` variable in the makefile.
-
-## What comes next?
-
-Since the list module is more or less done (though im sure it will still require
-a lot of work), i now plan to switch to working on tuples.
 
 ## Lain for no reason
 
