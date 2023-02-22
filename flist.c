@@ -77,7 +77,7 @@ struct flist_iter {
 struct flist {
         struct       flist_iter *head;  /**< @brief Head of the list */
         struct       flist_iter *tail;  /**< @brief Tail of the list */
-        void       (**cl_hand)(void *); /**< @brief Cleanup handlers */
+        void       (*cl_hand)(void *); /**< @brief Cleanup handlers */
         size_t       len;               /**< @brief Length of the list */
 };
 
