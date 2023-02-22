@@ -163,7 +163,8 @@ flist_copy(struct flist *l, void *(*copy_c)(void *))
         for (ret = NULL, cur = l->head; cur != NULL; cur = cur->next) {
                 if (copy_c == NULL) {
                         ret = flist_append(ret, cur->data,
-                            cur->call_h ? FLIST_CLEANPROT : FLIST_DONTCLEAN);
+                            cur->call_h ? FLIST_CLEANPROT | FLIST_CLEANABLE
+                            : FLIST_DONTCLEAN);
                 } else {
                         ret = flist_append(ret, copy_c(cur->data), 
                             FLIST_CLEANABLE);
