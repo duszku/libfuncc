@@ -43,8 +43,11 @@ list for you and return a pointer to it. Thus every call to the aforementioned
 should take form of:
 
 ```c
-struct  flist *list;
-list = flist_append(list, /* YOUR DATA */, /* FLAGS */)
+struct  flist *list = NULL;
+
+list = flist_append(list, /* YOUR DATA */, /* FLAGS */);
+list = flist_append(list, /* MORE DATA */, /* FLAGS */);
+list = flist_append(list, /* MOAR DATA */, /* FLAGS */);
 ```
 
 To mimic generics, `flist`s operate on void pointers. Thus data should be passed
