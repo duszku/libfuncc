@@ -344,8 +344,10 @@ flist_take(struct flist **lp, int n, int force)
         struct   flist_iter *cur, *tmp;
         int      i;
 
-        if (n <= 0)
+        if (n <= 0) {
                 flist_free(lp, force);
+                return;
+        }
 
         if ((size_t)n >= flist_length(*lp))
                 return;
