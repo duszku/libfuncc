@@ -306,6 +306,16 @@ void            *flist_foldl(struct flist *, void *, void *(*)(void *, void *));
  */
 void            *flist_val_head(struct flist *);
 
+/**
+ * @fn void *flist_val_at_i(struct flist *l, int i)
+ * @brief Returns data stored in @p i th node of the list
+ *
+ * If list is shorter than @p i or @p l is NULL, then NULL is returned.
+ *
+ * @param[in] l Source list
+ */
+void            *flist_val_at_i(struct flist *, int);
+
 #ifdef _RM_POSIX_DECL
 # undef _POSIX_C_SOURCE
 #endif

@@ -441,6 +441,20 @@ flist_val_head(struct flist *l)
         return l->head != NULL ? l->head->data : NULL;
 }
 
+void *
+flist_val_at_i(struct flist *l, int i)
+{
+        struct   flist_iter *cur;
+
+        if (l == NULL)
+                return NULL;
+
+        for (cur = l->head; cur != NULL && i > 0; --i, cur = cur->next)
+                ;
+
+        return i == 0 ? cur->data : NULL;
+}
+
 struct flist *
 new_list(void)
 {
