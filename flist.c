@@ -432,6 +432,15 @@ flist_foldl(struct flist *l, void *x, void *(*f)(void *, void *))
         return acc;
 }
 
+void *
+flist_val_head(struct flist *l)
+{
+        if (l == NULL)
+                return NULL;
+
+        return l->head != NULL ? l->head->data : NULL;
+}
+
 struct flist *
 new_list(void)
 {

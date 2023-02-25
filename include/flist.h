@@ -296,6 +296,16 @@ void            *flist_foldr(struct flist *, void *, void *(*)(void *, void *));
  */
 void            *flist_foldl(struct flist *, void *, void *(*)(void *, void *));
 
+/**
+ * @fn void *flist_val_head(struct flist *l)
+ * @brief Returns data stored in the head of the list
+ *
+ * If list is empty or @p l is NULL, then NULL is returned.
+ *
+ * @param[in] l Source list
+ */
+void            *flist_val_head(struct flist *);
+
 #ifdef _RM_POSIX_DECL
 # undef _POSIX_C_SOURCE
 #endif
