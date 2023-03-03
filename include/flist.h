@@ -332,6 +332,14 @@ void            *flist_foldr(struct flist *, void *, void *(*)(void *, void *));
  */
 void            *flist_foldl(struct flist *, void *, void *(*)(void *, void *));
 
+/**
+ * @fn void flist_reverse(struct flist *l)
+ * @brief Inverts order of elements in @p l
+ *
+ * @param[in] l Target list
+ */
+void             flist_reverse(struct flist *);
+
 #ifdef _RM_POSIX_DECL
 # undef _POSIX_C_SOURCE
 #endif
