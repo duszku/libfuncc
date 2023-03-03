@@ -474,6 +474,25 @@ flist_repeat(void *dat, int n, void *(*copy_c)(void *))
         return ret;
 }
 
+void
+flist_reverse(struct flist *l)
+{
+        struct   flist_iter *cur, *tmp;
+
+        if (l == NULL)
+                return;
+
+        for (cur = l->head; cur != NULL; cur = cur->prev) {
+                tmp = cur->next;
+                cur->next = cur->prev;
+                cur->prev = tmp;
+        }
+
+        tmp = l->head;
+        l->head = l->tail;
+        l->tail = tmp;
+}
+
 struct flist *
 new_list(void)
 {
