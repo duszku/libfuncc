@@ -62,8 +62,8 @@ struct flist_iter {
         struct       flist_iter *prev;  /**< @brief Previous node */
         void        *data;              /**< @brief Pointer to the data */
 
-        unsigned     call_h : 1;      /**< @brief Call cleanup handler? */
-        unsigned     prot_h : 1;      /**< @brief Call cleanup iff forced? */
+        unsigned     call_h : 1;        /**< @brief Call cleanup handler? */
+        unsigned     prot_h : 1;        /**< @brief Call cleanup iff forced? */
 };
 
 /**
@@ -77,7 +77,7 @@ struct flist_iter {
 struct flist {
         struct       flist_iter *head;  /**< @brief Head of the list */
         struct       flist_iter *tail;  /**< @brief Tail of the list */
-        void       (*cl_hand)(void *); /**< @brief Cleanup handlers */
+        void       (*cl_hand)(void *);  /**< @brief Cleanup handler */
         size_t       len;               /**< @brief Length of the list */
 };
 
@@ -344,8 +344,10 @@ flist_take(struct flist **lp, int n, int force)
         struct   flist_iter *cur, *tmp;
         int      i;
 
-        if (n <= 0)
+        if (n <= 0) {
                 flist_free(lp, force);
+                return;
+        }
 
         if ((size_t)n >= flist_length(*lp))
                 return;
@@ -428,6 +430,67 @@ flist_foldl(struct flist *l, void *x, void *(*f)(void *, void *))
         }
 
         return acc;
+}
+
+void *
+flist_val_head(struct flist *l)
+{
+        if (l == NULL)
+                return NULL;
+
+        return l->head != NULL ? l->head->data : NULL;
+}
+
+void *
+flist_val_at_i(struct flist *l, int i)
+{
+        struct   flist_iter *cur;
+
+        if (l == NULL)
+                return NULL;
+
+        for (cur = l->head; cur != NULL && i > 0; --i, cur = cur->next)
+                ;
+
+        return i == 0 ? cur->data : NULL;
+}
+
+struct flist *
+flist_repeat(void *dat, int n, void *(*copy_c)(void *))
+{
+        struct   flist *ret;
+
+        if (dat == NULL || n == 0)
+                return NULL;
+
+        for (ret = NULL; n > 0; --n) {
+                if (copy_c == NULL) {
+                        ret = flist_append(ret, dat, FLIST_CLEANABLE
+                            | FLIST_CLEANPROT);
+                } else
+                        ret = flist_append(ret, copy_c(dat), FLIST_CLEANABLE);
+        }
+
+        return ret;
+}
+
+void
+flist_reverse(struct flist *l)
+{
+        struct   flist_iter *cur, *tmp;
+
+        if (l == NULL)
+                return;
+
+        for (cur = l->head; cur != NULL; cur = cur->prev) {
+                tmp = cur->next;
+                cur->next = cur->prev;
+                cur->prev = tmp;
+        }
+
+        tmp = l->head;
+        l->head = l->tail;
+        l->tail = tmp;
 }
 
 struct flist *

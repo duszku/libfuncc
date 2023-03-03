@@ -127,6 +127,42 @@ void             flist_free(struct flist **, int);
 void             flist_set_cleanup(struct flist *, void (*)(void *));
 
 /**
+ * @fn void *flist_val_head(struct flist *l)
+ * @brief Returns data stored in the head of the list
+ *
+ * If list is empty or @p l is NULL, then NULL is returned.
+ *
+ * @param[in] l Source list
+ */
+void            *flist_val_head(struct flist *);
+
+/**
+ * @fn void *flist_val_at_i(struct flist *l, int i)
+ * @brief Returns data stored in @p i th node of the list
+ *
+ * If list is shorter than @p i or @p l is NULL, then NULL is returned.
+ *
+ * @param[in] l Source list
+ */
+void            *flist_val_at_i(struct flist *, int);
+
+/**
+ * @fn struct flist *flist_repeat(void *dat, int n, void *(*)(void *copy_c))
+ * @brief Constructs a new list with element @p dat repeated @p n times.
+ *
+ * If @p copy_c is NULL, then the @p dat pointer will be naively put into all
+ * nodes and the list will behave as if all of them were appended to it with
+ * @a FLIST_CLEANABLE and @a FLIST_CLEANPROT inflags. Otherwise @p copy_c is
+ * expected to return dynamically allocated copies of its input and constructed
+ * list behaves as if only @a FLIST_CLEANABLE was used. Returns NULL on error.
+ *
+ * @param[in] dat Data to repeat
+ * @param[in] n Number of repetitions
+ * @param[in] copy_c Copy constructor, set to NULL for shallow copy
+ */
+struct flist    *flist_repeat(void *, int, void *(*)(void *));
+
+/**
  * @fn void flist_head(struct flist *l, int force)
  * @brief Drops all but the first element of the list
  *
@@ -295,6 +331,14 @@ void            *flist_foldr(struct flist *, void *, void *(*)(void *, void *));
  * @param[in] f Folding function
  */
 void            *flist_foldl(struct flist *, void *, void *(*)(void *, void *));
+
+/**
+ * @fn void flist_reverse(struct flist *l)
+ * @brief Inverts order of elements in @p l
+ *
+ * @param[in] l Target list
+ */
+void             flist_reverse(struct flist *);
 
 #ifdef _RM_POSIX_DECL
 # undef _POSIX_C_SOURCE
