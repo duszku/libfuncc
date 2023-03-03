@@ -127,6 +127,26 @@ void             flist_free(struct flist **, int);
 void             flist_set_cleanup(struct flist *, void (*)(void *));
 
 /**
+ * @fn void *flist_val_head(struct flist *l)
+ * @brief Returns data stored in the head of the list
+ *
+ * If list is empty or @p l is NULL, then NULL is returned.
+ *
+ * @param[in] l Source list
+ */
+void            *flist_val_head(struct flist *);
+
+/**
+ * @fn void *flist_val_at_i(struct flist *l, int i)
+ * @brief Returns data stored in @p i th node of the list
+ *
+ * If list is shorter than @p i or @p l is NULL, then NULL is returned.
+ *
+ * @param[in] l Source list
+ */
+void            *flist_val_at_i(struct flist *, int);
+
+/**
  * @fn void flist_head(struct flist *l, int force)
  * @brief Drops all but the first element of the list
  *
@@ -295,26 +315,6 @@ void            *flist_foldr(struct flist *, void *, void *(*)(void *, void *));
  * @param[in] f Folding function
  */
 void            *flist_foldl(struct flist *, void *, void *(*)(void *, void *));
-
-/**
- * @fn void *flist_val_head(struct flist *l)
- * @brief Returns data stored in the head of the list
- *
- * If list is empty or @p l is NULL, then NULL is returned.
- *
- * @param[in] l Source list
- */
-void            *flist_val_head(struct flist *);
-
-/**
- * @fn void *flist_val_at_i(struct flist *l, int i)
- * @brief Returns data stored in @p i th node of the list
- *
- * If list is shorter than @p i or @p l is NULL, then NULL is returned.
- *
- * @param[in] l Source list
- */
-void            *flist_val_at_i(struct flist *, int);
 
 #ifdef _RM_POSIX_DECL
 # undef _POSIX_C_SOURCE
