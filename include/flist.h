@@ -154,7 +154,7 @@ void            *flist_val_at_i(struct flist *, int);
  * nodes and the list will behave as if all of them were appended to it with
  * @a FLIST_CLEANABLE and @a FLIST_CLEANPROT inflags. Otherwise @p copy_c is
  * expected to return dynamically allocated copies of its input and constructed
- * list behaves as if only @a FLIST_CLEANABLE was used.
+ * list behaves as if only @a FLIST_CLEANABLE was used. Returns NULL on error.
  *
  * @param[in] dat Data to repeat
  * @param[in] n Number of repetitions
