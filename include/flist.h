@@ -147,6 +147,22 @@ void            *flist_val_head(struct flist *);
 void            *flist_val_at_i(struct flist *, int);
 
 /**
+ * @fn struct flist *flist_repeat(void *dat, int n, void *(*)(void *copy_c))
+ * @brief Constructs a new list with element @p dat repeated @p n times.
+ *
+ * If @p copy_c is NULL, then the @p dat pointer will be naively put into all
+ * nodes and the list will behave as if all of them were appended to it with
+ * @a FLIST_CLEANABLE and @a FLIST_CLEANPROT inflags. Otherwise @p copy_c is
+ * expected to return dynamically allocated copies of its input and constructed
+ * list behaves as if only @a FLIST_CLEANABLE was used.
+ *
+ * @param[in] dat Data to repeat
+ * @param[in] n Number of repetitions
+ * @param[in] copy_c Copy constructor, set to NULL for shallow copy
+ */
+struct flist    *flist_repeat(void *, int, void *(*)(void *));
+
+/**
  * @fn void flist_head(struct flist *l, int force)
  * @brief Drops all but the first element of the list
  *
