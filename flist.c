@@ -456,6 +456,24 @@ flist_val_at_i(struct flist *l, int i)
 }
 
 struct flist *
+flist_repeat(void *dat, int n, void *(*copy_c)(void *))
+{
+        struct   flist *ret;
+
+        if (dat == NULL || n == 0)
+                return NULL;
+
+        for (ret = NULL; n > 0; --n) {
+                if (copy_c == NULL)
+                        ret = flist_append(ret, dat, FLIST_CLEANABLE | FLIST_CLEANPROT);
+                else
+                        ret = flist_append(ret, copy_c(dat), FLIST_CLEANABLE);
+        }
+
+        return ret;
+}
+
+struct flist *
 new_list(void)
 {
         struct   flist *ret;
