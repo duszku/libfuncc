@@ -30,6 +30,24 @@ ftuple_create(size_t dim, ...)
         return ret;
 }
 
+struct ftuple *
+ftuple_nuls(size_t dim)
+{
+        struct   ftuple *ret;
+
+        if (dim < 2 || (ret = malloc(sizeof(struct ftuple))) == NULL)
+                return NULL;
+
+        if ((ret->arr = calloc(dim, sizeof(void *))) == NULL) {
+                free(ret);
+                return NULL;
+        }
+
+        ret->dim = dim;
+
+        return ret;
+}
+
 void
 ftuple_free(struct ftuple **tp)
 {
