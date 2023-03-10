@@ -60,6 +60,16 @@ struct ftuple;
 struct ftuple   *ftuple_create(size_t, ...);
 
 /**
+ * @fn struct ftuple *ftuple_nuls(size_t dim)
+ * @brief Creates empty tuple of size @p dim
+ *
+ * Creates a tuple of size @p dim with every value set to NULL.
+ *
+ * @param[in] dim Size of the tuple
+ */
+struct ftuple   *ftuple_nuls(size_t);
+
+/**
  * @fn void ftuple_free(struct ftuple **tp)
  * @brief Free tuple structure
  *
